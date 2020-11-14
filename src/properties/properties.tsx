@@ -7,8 +7,9 @@ export default {
     },
     font: {
         size: {
-            button: 25,
-            medium: 20
+            veryLarge: 60,
+            large: 25,
+            medium: 20,
         }
     },
     url: {

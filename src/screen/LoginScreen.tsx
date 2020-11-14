@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, ToastAndroid } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Button from "../common/Button";
 import properties from "../properties/properties";
 import { TextInput } from "react-native-gesture-handler";
 import useAxios from "axios-hooks";
+import { GLOBAL } from "../properties/globalState";
 
 
 const LoginScreen = () => {
     const navigation = useNavigation();
+
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
 
     const [{ data: loginData, loading: loginLoading, error: loginError }, loginExecute] = useAxios(
         {
@@ -18,8 +23,13 @@ const LoginScreen = () => {
         { manual: true }
     )
 
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const [{ data: userData, loading: userLoading, error: userError }, userExecute] = useAxios(
+        {
+            url: `${properties.url.autentification}/api/user/${username}`,
+            method: 'GET'
+        },
+        { manual: true }
+    )
 
     const login = async () => {
         let request = {
@@ -31,7 +41,14 @@ const LoginScreen = () => {
 
         try {
             await loginExecute(request);
-            // todo navigate to main screen and save global username state?
+
+            if (loginData.canLogin) {
+                await userExecute();
+                GLOBAL.USER.id = userData.id;
+                navigation.navigate("Home");
+            } else {
+                ToastAndroid.show("Incorrect username or password", ToastAndroid.SHORT);
+            }
         } catch (err) {
             console.log(loginError);
         }

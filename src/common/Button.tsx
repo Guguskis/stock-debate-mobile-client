@@ -27,6 +27,6 @@ const styles = StyleSheet.create({
         textAlignVertical: "center",
         textAlign: "center",
         backgroundColor: properties.color.primary,
-        fontSize: properties.font.size.button
+        fontSize: properties.font.size.large
     }
 })
