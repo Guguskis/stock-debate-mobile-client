@@ -6,7 +6,7 @@ import Button from "../common/Button";
 import properties from "../properties/properties";
 import Title from "../common/Title";
 
-const LoginScreen = () => {
+const HomeScreen = () => {
     const navigation = useNavigation();
 
     return (
@@ -21,6 +21,7 @@ const LoginScreen = () => {
 
                 <Button
                     style={styles.button}
+                    onPress={() => navigation.navigate("Analysis")}
                     text="Analysis" />
 
                 <Button
@@ -37,7 +38,7 @@ const LoginScreen = () => {
     );
 }
 
-export default LoginScreen;
+export default HomeScreen;
 
 const styles = StyleSheet.create({
     button: {

@@ -7,7 +7,7 @@ import { TextInput } from "react-native-gesture-handler";
 import useAxios from "axios-hooks";
 
 
-const LoginScreen = () => {
+const RegistrationScreen = () => {
     const navigation = useNavigation();
 
     const [{ data: registerData, loading: registerLoading, error: registerError }, registerExecute] = useAxios(
@@ -110,7 +110,7 @@ const LoginScreen = () => {
     );
 }
 
-export default LoginScreen;
+export default RegistrationScreen;
 
 const styles = StyleSheet.create({
     button: {
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "center",
         backgroundColor: properties.color.background,
-        padding: 5
+        padding: 25
     },
     buttonContainer: {
         flex: 1,

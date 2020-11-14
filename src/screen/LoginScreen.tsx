@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "center",
         backgroundColor: properties.color.background,
-        padding: 5
+        padding: 25
     },
     buttonContainer: {
         flex: 1,
