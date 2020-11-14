@@ -15,7 +15,7 @@ const LoginScreen = () => {
     const [password, setPassword] = useState("");
 
 
-    const [{ data: loginData, loading: loginLoading, error: loginError }, loginExecute] = useAxios(
+    const [{ error: loginError }, loginExecute] = useAxios(
         {
             url: `${properties.url.autentification}/api/user/login`,
             method: 'POST'
@@ -23,7 +23,7 @@ const LoginScreen = () => {
         { manual: true }
     )
 
-    const [{ data: userData, loading: userLoading, error: userError }, userExecute] = useAxios(
+    const [{ loading: userLoading }, userExecute] = useAxios(
         {
             url: `${properties.url.autentification}/api/user/${username}`,
             method: 'GET'
@@ -40,11 +40,12 @@ const LoginScreen = () => {
         };
 
         try {
-            await loginExecute(request);
+            const { data: loginData } = await loginExecute(request);
 
             if (loginData.canLogin) {
-                await userExecute();
+                const { data: userData } = await userExecute();
                 GLOBAL.USER.id = userData.id;
+                GLOBAL.USER.username = userData.username;
                 navigation.navigate("Home");
             } else {
                 ToastAndroid.show("Incorrect username or password", ToastAndroid.SHORT);
@@ -53,6 +54,10 @@ const LoginScreen = () => {
             console.log(loginError);
         }
     }
+
+    useEffect(() => {
+
+    }, [])
 
     const register = () => {
         navigation.navigate("Registration");
