@@ -12,6 +12,6 @@ export default {
         }
     },
     url: {
-        autentification: "localhost:8081"
+        autentification: "http://192.168.43.170:8081"
     }
 }

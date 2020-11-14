@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, ToastAndroid } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Button from "../common/Button";
 import properties from "../properties/properties";
@@ -10,9 +10,9 @@ import useAxios from "axios-hooks";
 const LoginScreen = () => {
     const navigation = useNavigation();
 
-    const [{ data: loginData, loading: loginLoading, error: loginError }, loginExecute] = useAxios(
+    const [{ data: registerData, loading: registerLoading, error: registerError }, registerExecute] = useAxios(
         {
-            url: `${properties.url.autentification}/api/user/login`,
+            url: `${properties.url.autentification}/api/user`,
             method: 'POST'
         },
         { manual: true }
@@ -20,8 +20,17 @@ const LoginScreen = () => {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [repeatPassword, setRepeatPassword] = useState("");
 
-    const login = async () => {
+
+    const register = async () => {
+
+        if (!inputFieldsAreValid()) {
+            let errorMessage = getInputFieldValidationMessage();
+            ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
+            return;
+        }
+
         let request = {
             data: {
                 username: username,
@@ -30,16 +39,34 @@ const LoginScreen = () => {
         };
 
         try {
-            await loginExecute(request);
-            // todo navigate to main screen and save global username state?
+            await registerExecute(request);
+            ToastAndroid.show("Registration succseful", ToastAndroid.SHORT);
+            navigation.navigate("Login");
         } catch (err) {
-            console.log(loginError);
+            let errorMessage = registerError?.response?.data;
+            ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
         }
+
     }
 
-    const register = () => {
-        navigation.navigate("Registration");
+    const inputFieldsAreValid = () => {
+        return getInputFieldValidationMessage() == "";
     }
+
+    const getInputFieldValidationMessage = () => {
+        let errorMessage = "";
+
+        if (username == "") {
+            errorMessage = "Enter username";
+        } else if (password.length < 8) {
+            errorMessage = "Password must be at least 8 symbols";
+        } else if (password != repeatPassword) {
+            errorMessage = "Passwords don't match";
+        }
+
+        return errorMessage;
+    }
+
 
     return (
         <View style={styles.activity}>
@@ -63,11 +90,17 @@ const LoginScreen = () => {
                 secureTextEntry={true}
             />
 
+            <Text style={styles.inputLabel}>
+                Repeat password
+            </Text>
+            <TextInput
+                style={styles.inputField}
+                onChangeText={setRepeatPassword}
+                value={repeatPassword}
+                secureTextEntry={true}
+            />
+
             <View style={styles.buttonContainer}>
-                <Button
-                    style={styles.button}
-                    onPress={login}
-                    text="Login" />
                 <Button
                     style={styles.button}
                     onPress={register}
