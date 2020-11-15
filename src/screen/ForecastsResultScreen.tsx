@@ -85,13 +85,13 @@ const renderForecastItem = ({ item }: { item: Forecast }) => {
     );
 }
 
-const StatisticsItem = (props: { imageUrl: any, percents: number }) => {
+const StatisticsItem = (props: { imageUrl: any, ratio: number }) => {
     return (
         <View style={styles.statisticsItem}>
             <Image
                 style={styles.statisticsItemLogo}
                 source={props.imageUrl} />
-            <Text style={styles.statisticsItemText}>{convertToPercentsString(props.percents)}</Text>
+            <Text style={styles.statisticsItemText}>{convertToPercentsString(props.ratio)}</Text>
         </View>
     );
 }
@@ -105,6 +105,29 @@ const parseForecasts = (forecasts: Array<any>): Array<Forecast> => {
     });
 }
 
+const getSuccessfulRatio = (forecasts: Array<Forecast>) => {
+    let successful = forecasts
+        .filter(forecast => hasExpired(forecast))
+        .filter(forecast => forecast.successCoefficient >= 0)
+        .length;
+    return successful / forecasts.length;
+}
+
+const getUnsuccessfulRatio = (forecasts: Array<Forecast>) => {
+    let unsuccessful = forecasts
+        .filter(forecast => hasExpired(forecast))
+        .filter(forecast => forecast.successCoefficient < 0)
+        .length;
+    return unsuccessful / forecasts.length;
+}
+
+const getOngoingRatio = (forecasts: Array<Forecast>) => {
+    let ongoing = forecasts
+        .filter(forecast => !hasExpired(forecast))
+        .length;
+    return ongoing / forecasts.length;
+}
+
 const ForecastsResultScreen = () => {
     const route = useRoute();
 
@@ -112,6 +135,17 @@ const ForecastsResultScreen = () => {
     const [forecasts, setForecasts] = useState<Array<Forecast>>(parseForecasts(route.params?.redditUser.forecasts));
 
     const [searchQuery, setSearchQuery] = useState("");
+    const [successfulRatio, setSuccessfulRatio] = useState(0);
+    const [unsuccessfulRatio, setUnsuccessfulRatio] = useState(0);
+    const [ongoingRatio, setOngoingRatio] = useState(0);
+
+    useEffect(() => {
+        if (forecasts) {
+            setSuccessfulRatio(getSuccessfulRatio(forecasts));
+            setUnsuccessfulRatio(getUnsuccessfulRatio(forecasts));
+            setOngoingRatio(getOngoingRatio(forecasts));
+        }
+    }, [forecasts]);
 
     return (
         <View style={styles.activity}>
@@ -119,15 +153,15 @@ const ForecastsResultScreen = () => {
             <View style={styles.statisticsContainer}>
                 <StatisticsItem
                     imageUrl={images.successIcon}
-                    percents={0.14} />
+                    ratio={successfulRatio} />
 
                 <StatisticsItem
                     imageUrl={images.failureIcon}
-                    percents={0.50} />
+                    ratio={unsuccessfulRatio} />
 
                 <StatisticsItem
                     imageUrl={images.neutralIcon}
-                    percents={0.36} />
+                    ratio={ongoingRatio} />
             </View>
 
             <TextInput
