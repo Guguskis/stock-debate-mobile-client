@@ -128,11 +128,28 @@ const getOngoingRatio = (forecasts: Array<Forecast>) => {
     return ongoing / forecasts.length;
 }
 
+const filterForecastsByQuery = (query: string, forecasts: Array<Forecast>) => {
+    let lowercaseQuery = query.toLowerCase();
+    return forecasts.filter(forecast => {
+        let lowercaseSymbol = forecast.stock.symbol.toLowerCase();
+        let lowercaseCompany = forecast.stock.companyName.toLowerCase();
+
+        let symbolContainsQuery = lowercaseSymbol.includes(lowercaseQuery);
+        let companyContainsQuery = lowercaseCompany.includes(lowercaseQuery);
+
+        return symbolContainsQuery || companyContainsQuery;
+    });
+}
+
+// sort expirationDate, successCoeff
+// filter by stock, optionType
+
 const ForecastsResultScreen = () => {
     const route = useRoute();
 
     const [username, setUsername] = useState(route.params?.redditUser.username);
     const [forecasts, setForecasts] = useState<Array<Forecast>>(parseForecasts(route.params?.redditUser.forecasts));
+    const [filteredForecasts, setFilteredForecasts] = useState<Array<Forecast>>(parseForecasts(route.params?.redditUser.forecasts));
 
     const [searchQuery, setSearchQuery] = useState("");
     const [successfulRatio, setSuccessfulRatio] = useState(0);
@@ -140,12 +157,18 @@ const ForecastsResultScreen = () => {
     const [ongoingRatio, setOngoingRatio] = useState(0);
 
     useEffect(() => {
-        if (forecasts) {
+        if (filteredForecasts) {
             setSuccessfulRatio(getSuccessfulRatio(forecasts));
             setUnsuccessfulRatio(getUnsuccessfulRatio(forecasts));
             setOngoingRatio(getOngoingRatio(forecasts));
         }
-    }, [forecasts]);
+    }, [filteredForecasts]);
+
+    useEffect(() => {
+        let filteredForecasts = filterForecastsByQuery(searchQuery, forecasts);
+        setFilteredForecasts(filteredForecasts);
+
+    }, [searchQuery])
 
     return (
         <View style={styles.activity}>
@@ -171,7 +194,7 @@ const ForecastsResultScreen = () => {
                 placeholder="Search by company name" />
 
             <FlatList
-                data={forecasts}
+                data={filteredForecasts}
                 renderItem={renderForecastItem}
                 keyExtractor={(forecast, index) => index.toString()} />
         </View>
