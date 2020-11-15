@@ -73,8 +73,16 @@ const ForecastsResultScreen = () => {
     const [username, setUsername] = useState(route.params?.redditUser.username);
     const [forecasts, setForecasts] = useState<Array<Forecast>>(parseForecasts(route.params?.redditUser.forecasts));
 
+    const [searchQuery, setSearchQuery] = useState("");
+
     return (
         <View style={styles.activity}>
+            <TextInput
+                style={styles.inputField}
+                onChangeText={setSearchQuery}
+                value={searchQuery}
+                placeholder="Search by company name"
+            />
             <ForecastsItem forecast={forecasts[0]} />
         </View>
     );
@@ -86,7 +94,6 @@ const styles = StyleSheet.create({
     activity: {
         flex: 1,
         flexDirection: "column",
-        justifyContent: "center",
         backgroundColor: properties.color.background,
         padding: 5
     },
@@ -115,5 +122,15 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 15,
         color: properties.color.text
+    },
+    inputField: {
+        height: 50,
+        borderColor: "black",
+        borderWidth: 1,
+        fontSize: properties.font.size.medium,
+        backgroundColor: properties.color.primary,
+        marginBottom: 10,
+        paddingLeft: 10,
+        paddingRight: 10
     }
 });
