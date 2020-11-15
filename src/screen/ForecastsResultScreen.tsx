@@ -110,6 +110,7 @@ const getSuccessfulRatio = (forecasts: Array<Forecast>) => {
         .filter(forecast => hasExpired(forecast))
         .filter(forecast => forecast.successCoefficient >= 0)
         .length;
+    if (forecasts.length == 0) return 0;
     return successful / forecasts.length;
 }
 
@@ -118,6 +119,7 @@ const getUnsuccessfulRatio = (forecasts: Array<Forecast>) => {
         .filter(forecast => hasExpired(forecast))
         .filter(forecast => forecast.successCoefficient < 0)
         .length;
+    if (forecasts.length == 0) return 0;
     return unsuccessful / forecasts.length;
 }
 
@@ -125,6 +127,7 @@ const getOngoingRatio = (forecasts: Array<Forecast>) => {
     let ongoing = forecasts
         .filter(forecast => !hasExpired(forecast))
         .length;
+    if (forecasts.length == 0) return 0;
     return ongoing / forecasts.length;
 }
 
@@ -158,9 +161,9 @@ const ForecastsResultScreen = () => {
 
     useEffect(() => {
         if (filteredForecasts) {
-            setSuccessfulRatio(getSuccessfulRatio(forecasts));
-            setUnsuccessfulRatio(getUnsuccessfulRatio(forecasts));
-            setOngoingRatio(getOngoingRatio(forecasts));
+            setSuccessfulRatio(getSuccessfulRatio(filteredForecasts));
+            setUnsuccessfulRatio(getUnsuccessfulRatio(filteredForecasts));
+            setOngoingRatio(getOngoingRatio(filteredForecasts));
         }
     }, [filteredForecasts]);
 
