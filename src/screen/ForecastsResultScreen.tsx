@@ -14,37 +14,49 @@ interface Forecast {
         latestPrice: number
     },
     expirationPrice: number,
-    targetPrice: number,
+    strikePrice: number,
     successCoefficient: number
     expirationDate: Date,
     createdDate: Date,
-    type: string,
+    forecastType: string,
+}
+
+const hasExpired = (forecast: Forecast) => {
+    let now = new Date();
+    return forecast.expirationDate > now;
+};
+
+const convertToPercentsString = (value: number) => Math.round(value * 100) + '%';
+
+const getFormattedDate = (date: Date) => {
+
+    const yearBeforeNow = new Date();
+    yearBeforeNow.setFullYear(yearBeforeNow.getFullYear() - 1);
+
+    const appendPrefixZeroIfOneDigitNumber = (number: number) => {
+        let result = "";
+        if (number < 10) result += "0";
+        result += number;
+        return result;
+    }
+
+    const formattedMonth = appendPrefixZeroIfOneDigitNumber(date.getMonth() + 1);
+    const formattedDay = appendPrefixZeroIfOneDigitNumber(date.getDay());
+
+    if (date > yearBeforeNow) {
+        return `${formattedMonth}/${formattedDay}`
+    } else {
+        let year = date.getFullYear().toString().substr(2, 2);
+        return `${year}/${formattedMonth}/${formattedDay}`
+    }
 }
 
 const renderForecastItem = ({ item }: { item: Forecast }) => {
 
-
-    const getFormattedDate = (date: Date) => {
-
-        const yearBeforeNow = new Date();
-        yearBeforeNow.setFullYear(yearBeforeNow.getFullYear() - 1);
-
-        const appendPrefixZeroIfOneDigitNumber = (number: number) => {
-            let result = "";
-            if (number < 10) result += "0";
-            result += number;
-            return result;
-        }
-
-        const formattedMonth = appendPrefixZeroIfOneDigitNumber(date.getMonth() + 1);
-        const formattedDay = appendPrefixZeroIfOneDigitNumber(date.getDay());
-
-        if (date > yearBeforeNow) {
-            return `${formattedMonth}/${formattedDay}`
-        } else {
-            let year = date.getFullYear().toString().substr(2, 2);
-            return `${year}/${formattedMonth}/${formattedDay}`
-        }
+    const successCoefficientString = convertToPercentsString(item.successCoefficient);
+    const successCoefficientStyle = {
+        color: item.successCoefficient >= 0 ? '#3f3' : '#c33',
+        fontWeight: "bold"
     }
 
     return (
@@ -52,21 +64,34 @@ const renderForecastItem = ({ item }: { item: Forecast }) => {
             <Image
                 style={styles.forecastLogo}
                 source={{ uri: item.stock.logoUrl }} />
-            <Text style={styles.text}>{getFormattedDate(item.createdDate)}</Text>
+
+            <View style={styles.forecastItemDetails}>
+                <Text style={styles.text}>{item.forecastType} for {item.stock.symbol}</Text>
+                <Text style={styles.text}>Created {getFormattedDate(item.createdDate)}</Text>
+
+                {hasExpired(item) ?
+                    <Text style={styles.text}>Expired</Text>
+                    :
+                    <Text style={styles.text}>Expires  {getFormattedDate(item.expirationDate)}</Text>
+                }
+            </View>
+            <View style={styles.forecastItemDetails}>
+                {!hasExpired(item) ? <Text style={styles.text}>Strike price  {item.strikePrice.toFixed(2)}</Text> : null}
+                {!hasExpired(item) ? <Text style={styles.text}>Latest price {item.stock.latestPrice.toFixed(2)}</Text> : null}
+                <Text style={[styles.text, successCoefficientStyle]}>Profit {successCoefficientString}</Text>
+
+            </View>
         </View>
     );
 }
 
 const StatisticsItem = (props: { imageUrl: any, percents: number }) => {
-
-    const formattedPercents = Math.round(props.percents * 100) + '%';
-
     return (
         <View style={styles.statisticsItem}>
             <Image
                 style={styles.statisticsItemLogo}
                 source={props.imageUrl} />
-            <Text style={styles.statisticsItemText}>{formattedPercents}</Text>
+            <Text style={styles.statisticsItemText}>{convertToPercentsString(props.percents)}</Text>
         </View>
     );
 }
@@ -90,7 +115,7 @@ const ForecastsResultScreen = () => {
 
     return (
         <View style={styles.activity}>
-            <Text style={styles.usernameText}>{username}'s' forecasts</Text>
+            <Text style={styles.usernameText}>{username}'s forecasts</Text>
             <View style={styles.statisticsContainer}>
                 <StatisticsItem
                     imageUrl={images.successIcon}
@@ -137,16 +162,17 @@ const styles = StyleSheet.create({
     },
     forecastLogo: {
         width: 64,
-        height: 64
+        height: 64,
+        marginRight: 10
     },
     forecastItem: {
-        height: 100,
+        height: 75,
         width: '100%',
         borderRadius: 50,
         paddingLeft: 25,
         paddingRight: 25,
+        marginBottom: 5,
         flexDirection: "row",
-        justifyContent: "space-between",
         alignItems: "center",
         backgroundColor: properties.color.primary
     },
@@ -186,5 +212,8 @@ const styles = StyleSheet.create({
     statisticsItemText: {
         fontSize: properties.font.size.large,
         color: properties.color.text
+    },
+    forecastItemDetails: {
+        marginRight: 20
     }
 });
