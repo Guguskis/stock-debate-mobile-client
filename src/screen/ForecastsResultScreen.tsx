@@ -145,7 +145,7 @@ const filterForecastsByQuery = (query: string, forecasts: Array<Forecast>) => {
 }
 
 // sort expirationDate, successCoeff
-// filter by stock, optionType
+// filter by optionType
 
 const ForecastsResultScreen = () => {
     const route = useRoute();
@@ -262,7 +262,8 @@ const styles = StyleSheet.create({
     },
     statisticsItem: {
         flexDirection: "row",
-        alignItems: "center"
+        alignItems: "center",
+        width: 130
     },
     statisticsItemLogo: {
         height: 60,
