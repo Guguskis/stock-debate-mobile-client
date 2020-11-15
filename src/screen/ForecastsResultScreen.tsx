@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, Image } from "react-native";
+import { Text, View, StyleSheet, Image, FlatList } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import Button from "../common/Button";
 import properties from "../properties/properties";
@@ -13,7 +13,6 @@ interface Forecast {
         logoUrl: string,
         latestPrice: number
     },
-    username: string,
     expirationPrice: number,
     targetPrice: number,
     successCoefficient: number
@@ -22,8 +21,8 @@ interface Forecast {
     type: string,
 }
 
-const ForecastsItem = (props: { forecast: Forecast }) => {
-    const forecast = props.forecast;
+const renderForecastItem = ({ item }: { item: Forecast }) => {
+
 
     const getFormattedDate = (date: Date) => {
 
@@ -52,9 +51,8 @@ const ForecastsItem = (props: { forecast: Forecast }) => {
         <View style={styles.forecastItem}>
             <Image
                 style={styles.forecastLogo}
-                source={{ uri: forecast.stock.logoUrl }}
-            />
-            <Text style={styles.text}>{getFormattedDate(forecast.createdDate)}</Text>
+                source={{ uri: item.stock.logoUrl }} />
+            <Text style={styles.text}>{getFormattedDate(item.createdDate)}</Text>
         </View>
     );
 }
@@ -67,8 +65,7 @@ const StatisticsItem = (props: { imageUrl: any, percents: number }) => {
         <View style={styles.statisticsItem}>
             <Image
                 style={styles.statisticsItemLogo}
-                source={props.imageUrl}
-            />
+                source={props.imageUrl} />
             <Text style={styles.statisticsItemText}>{formattedPercents}</Text>
         </View>
     );
@@ -76,7 +73,7 @@ const StatisticsItem = (props: { imageUrl: any, percents: number }) => {
 
 const parseForecasts = (forecasts: Array<any>): Array<Forecast> => {
     return forecasts.map(forecast => {
-        const newForecast = JSON.parse(JSON.stringify(forecast));
+        const newForecast = JSON.parse(JSON.stringify(forecast)); // deep copy
         newForecast.expirationDate = new Date(forecast.expirationDate);
         newForecast.createdDate = new Date(forecast.createdDate);
         return newForecast;
@@ -93,6 +90,7 @@ const ForecastsResultScreen = () => {
 
     return (
         <View style={styles.activity}>
+            <Text style={styles.usernameText}>{username}'s' forecasts</Text>
             <View style={styles.statisticsContainer}>
                 <StatisticsItem
                     imageUrl={images.successIcon}
@@ -111,9 +109,12 @@ const ForecastsResultScreen = () => {
                 style={styles.inputField}
                 onChangeText={setSearchQuery}
                 value={searchQuery}
-                placeholder="Search by company name"
-            />
-            <ForecastsItem forecast={forecasts[0]} />
+                placeholder="Search by company name" />
+
+            <FlatList
+                data={forecasts}
+                renderItem={renderForecastItem}
+                keyExtractor={(forecast, index) => index.toString()} />
         </View>
     );
 }
@@ -151,6 +152,10 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 15,
+        color: properties.color.text
+    },
+    usernameText: {
+        fontSize: properties.font.size.large,
         color: properties.color.text
     },
     inputField: {
