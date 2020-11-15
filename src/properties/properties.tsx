@@ -13,6 +13,7 @@ export default {
         }
     },
     url: {
-        autentification: "http://192.168.43.170:8081"
+        autentification: "http://192.168.43.170:8081",
+        stockDebateApi: "http://192.168.43.170:8082"
     }
 }

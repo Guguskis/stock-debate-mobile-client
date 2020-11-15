@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Text, View, StyleSheet, ToastAndroid } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import Button from "../common/Button";
-import properties from "../properties/properties";
 import { TextInput } from "react-native-gesture-handler";
 import useAxios from "axios-hooks";
 
+import Button from "../common/Button";
+import properties from "../properties/properties";
 
 const ForecastsScreen = () => {
     const navigation = useNavigation();
-    const [{ data: forecastData, loading: forecastLoading, error: forecastError }, forecastExecute] = useAxios(
+    const [username, setUsername] = useState("");
+
+    const [{ error: forecastError }, forecastsExecute] = useAxios(
         {
-            url: `${properties.url.autentification}/api/user`, // todo change url
-            method: 'POST'
+            url: `${properties.url.stockDebateApi}/api/${username}/forecasts`,
+            method: 'GET'
         },
         { manual: true }
     )
 
-    const [username, setUsername] = useState("");
-
-    const analyse = async () => {
+    const retrieveForecasts = async () => {
 
         if (!inputFieldsAreValid()) {
             let errorMessage = getInputFieldValidationMessage();
@@ -28,21 +28,10 @@ const ForecastsScreen = () => {
         }
 
         try {
-            // await forecastExecute(request);
-            ToastAndroid.show("Registration successful", ToastAndroid.SHORT);
+            const { data: redditUser } = await forecastsExecute();
+
             navigation.navigate("ForecastsResults", {
-                forecasts: [
-                    {
-                        logo: "https://upload.wikimedia.org/wikipedia/commons/7/7c/AMD_Logo.svg",
-                        symbol: "AMD",
-                        price: 83.15,
-                        createdDate: "2021-01-01",
-                        expirationDate: "2021-01-05",
-                        type: "CALL",
-                        targetPrice: 95,
-                        successCoefficient: 13
-                    }
-                ]
+                redditUser: redditUser
             });
         } catch (err) {
             let errorMessage = forecastError?.response?.data;
@@ -65,7 +54,6 @@ const ForecastsScreen = () => {
         return errorMessage;
     }
 
-
     return (
         <View style={styles.activity}>
 
@@ -80,7 +68,7 @@ const ForecastsScreen = () => {
             <View style={styles.buttonContainer}>
                 <Button
                     style={styles.button}
-                    onPress={analyse}
+                    onPress={retrieveForecasts}
                     text="Analyse" />
             </View>
         </View>
