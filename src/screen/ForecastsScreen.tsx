@@ -11,7 +11,7 @@ const ForecastsScreen = () => {
     const navigation = useNavigation();
     const [username, setUsername] = useState("");
 
-    const [{ error: forecastError }, forecastsExecute] = useAxios(
+    const [{ loading: forecastLoading }, forecastsExecute] = useAxios(
         {
             url: `${properties.url.stockDebateApi}/api/${username}/forecasts`,
             method: 'GET'
@@ -34,8 +34,8 @@ const ForecastsScreen = () => {
                 redditUser: redditUser
             });
         } catch (err) {
-            let errorMessage = forecastError?.response?.data;
-            ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
+            let errorMessage = err?.response?.data;
+            ToastAndroid.show(errorMessage, ToastAndroid.LONG);
         }
 
     }

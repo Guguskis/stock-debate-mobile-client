@@ -132,8 +132,8 @@ const getOngoingRatio = (forecasts: Array<Forecast>) => {
 }
 
 const filterForecastsByQuery = (query: string, forecasts: Array<Forecast>) => {
-    let lowercaseQuery = query.toLowerCase();
     return forecasts.filter(forecast => {
+        let lowercaseQuery = query.toLowerCase();
         let lowercaseSymbol = forecast.stock.symbol.toLowerCase();
         let lowercaseCompany = forecast.stock.companyName.toLowerCase();
 
@@ -200,6 +200,7 @@ const ForecastsResultScreen = () => {
                 data={filteredForecasts}
                 renderItem={renderForecastItem}
                 keyExtractor={(forecast, index) => index.toString()} />
+
         </View>
     );
 }
