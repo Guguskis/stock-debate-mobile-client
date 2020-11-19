@@ -42,7 +42,7 @@ const getFormattedDate = (date: Date) => {
     }
 
     const formattedMonth = appendPrefixZeroIfOneDigitNumber(date.getMonth() + 1);
-    const formattedDay = appendPrefixZeroIfOneDigitNumber(date.getDay());
+    const formattedDay = appendPrefixZeroIfOneDigitNumber(date.getDate());
 
     if (date > yearBeforeNow) {
         return `${formattedMonth}/${formattedDay}`
