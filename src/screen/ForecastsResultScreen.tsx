@@ -23,7 +23,8 @@ interface Forecast {
 
 const hasExpired = (forecast: Forecast) => {
     let now = new Date();
-    return forecast.expirationDate > now;
+
+    return forecast.expirationDate < now;
 };
 
 const convertToPercentsString = (value: number) => Math.round(value * 100) + '%';
