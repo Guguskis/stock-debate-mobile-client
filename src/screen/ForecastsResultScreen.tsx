@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, Image, FlatList } from "react-native";
+import { Text, View, StyleSheet, FlatList, Image } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import Button from "../common/Button";
 import properties from "../properties/properties";
 import { TextInput } from "react-native-gesture-handler";
 import images from "../assets/images";
+import { SvgUri } from "react-native-svg";
 
 interface Forecast {
     stock: {
@@ -65,6 +66,12 @@ const renderForecastItem = ({ item }: { item: Forecast }) => {
             <Image
                 style={styles.forecastLogo}
                 source={{ uri: item.stock.logoUrl }} />
+
+            {/* <SvgUri
+                width="100%"
+                height="100%"
+                uri="https://upload.wikimedia.org/wikipedia/commons/b/bd/Tesla_Motors.svg"
+            /> */}
 
             <View style={styles.forecastItemDetails}>
                 <Text style={styles.text}>{item.forecastType} for {item.stock.symbol}</Text>
@@ -176,6 +183,10 @@ const ForecastsResultScreen = () => {
 
     return (
         <View style={styles.activity}>
+            <SvgImage
+                source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/b/bd/Tesla_Motors.svg' }}
+                style={{ width: 64, height: 64 }}
+            />
             <Text style={styles.usernameText}>{username}'s forecasts</Text>
             <View style={styles.statisticsContainer}>
                 <StatisticsItem

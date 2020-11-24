@@ -51,7 +51,7 @@ const LoginScreen = () => {
                 ToastAndroid.show("Incorrect username or password", ToastAndroid.SHORT);
             }
         } catch (err) {
-            console.log(loginError);
+            console.log(err);
         }
     }
 
