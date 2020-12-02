@@ -24,9 +24,9 @@ const SubredditOpinionScreen = () => {
         "investing", "wallstreetbets"
     ])
 
-    const [{ loading: forecastLoading }, forecastsExecute] = useAxios(
+    const [{ loading: subredditOpinionsLoading }, subredditOpinionsExecute] = useAxios(
         {
-            url: `${properties.url.stockDebateApi}/api/${selectedSubreddit}/forecasts`,
+            url: `${properties.url.community}/api/subreddit/${selectedSubreddit}/opinions?stockSymbol=${stock}&dateRange=DAY`,
             method: 'GET'
         },
         { manual: true }
@@ -41,13 +41,11 @@ const SubredditOpinionScreen = () => {
         }
 
         try {
-            const { data: redditUser } = await forecastsExecute();
+            const { data: subredditOpinions } = await subredditOpinionsExecute();
 
-            console.log("Retrieved opinions")
-
-            // navigation.navigate("ForecastsResults", {
-            //     redditUser: redditUser
-            // });
+            navigation.navigate("SubredditOpinionResults", {
+                subredditOpinions: subredditOpinions
+            });
         } catch (err) {
             let errorMessage = err?.response?.data;
             ToastAndroid.show(errorMessage, ToastAndroid.LONG);
@@ -91,7 +89,7 @@ const SubredditOpinionScreen = () => {
                 placeholder="Optional" />
 
             <View style={styles.buttonContainer}>
-                {forecastLoading ?
+                {subredditOpinionsLoading ?
                     <ActivityIndicator
                         color={properties.color.primary}
                         size={50}
