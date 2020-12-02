@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, FlatList, Image } from "react-native";
+import { Text, View, StyleSheet, FlatList, Image, Keyboard } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import properties from "../properties/properties";
 import { TextInput } from "react-native-gesture-handler";
@@ -163,6 +163,8 @@ const ForecastsResultScreen = () => {
     const [successfulRatio, setSuccessfulRatio] = useState(0);
     const [unsuccessfulRatio, setUnsuccessfulRatio] = useState(0);
     const [ongoingRatio, setOngoingRatio] = useState(0);
+
+    Keyboard.dismiss();
 
     useEffect(() => {
         if (filteredForecasts) {
