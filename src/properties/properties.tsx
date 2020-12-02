@@ -11,6 +11,7 @@ export default {
             veryLarge: 60,
             large: 25,
             medium: 20,
+            small: 15
         }
     },
     url: {

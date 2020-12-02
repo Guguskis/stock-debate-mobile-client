@@ -159,6 +159,7 @@ const ForecastsResultScreen = () => {
 
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedType, setSelectedType] = useState("");
+    const [selectedSort, setSelectedSort] = useState("");
     const [successfulRatio, setSuccessfulRatio] = useState(0);
     const [unsuccessfulRatio, setUnsuccessfulRatio] = useState(0);
     const [ongoingRatio, setOngoingRatio] = useState(0);
@@ -170,8 +171,6 @@ const ForecastsResultScreen = () => {
             setOngoingRatio(getOngoingRatio(filteredForecasts));
         }
     }, [filteredForecasts]);
-
-    // sort expirationDate, successCoeff
 
     const FilterPicker = () => {
         return (
@@ -191,6 +190,26 @@ const ForecastsResultScreen = () => {
         )
     }
 
+    const SortPicker = () => {
+        return (
+            <DropDownPicker
+                style={styles.sortTypeSelector}
+                itemStyle={styles.sortTypeSelectorItem}
+                dropDownStyle={styles.sortTypeSelectorDropdown}
+                items={[
+                    { label: 'Sort', value: '', },
+                    { label: 'Expiration asc', value: 'expirationDateAsc', },
+                    { label: 'Expiration desc', value: 'expirationDateDesc', },
+                    { label: 'Profit asc', value: 'successCoefficientAsc' },
+                    { label: 'Profit desc', value: 'successCoefficientDesc' },
+                ]}
+                placeholder="Sort"
+                defaultValue={selectedSort}
+                onChangeItem={item => setSelectedSort(item.value)}
+            />
+        )
+    }
+
     useEffect(() => {
         let filteredForecasts = filterForecastsByQuery(searchQuery, forecasts);
 
@@ -198,9 +217,26 @@ const ForecastsResultScreen = () => {
             filteredForecasts = filteredForecasts.filter(forecast => forecast.forecastType === selectedType);
         }
 
+        if (selectedSort != "") {
+            filteredForecasts = filteredForecasts.sort((forecastA, forecastB) => {
+                if (selectedSort == "expirationDateAsc") {
+                    return forecastA.expirationDate > forecastB.expirationDate;
+                } else if (selectedSort == "expirationDateDesc") {
+                    return forecastA.expirationDate < forecastB.expirationDate;
+                } else if (selectedSort == "successCoefficientAsc") {
+                    return forecastA.successCoefficient > forecastB.successCoefficient;
+                } else if (selectedSort == "successCoefficientDesc") {
+                    return forecastA.successCoefficient < forecastB.successCoefficient;
+                } else {
+                    console.log(`Unable to sort by '${selectedSort}'`);
+                    return true;
+                }
+            })
+        }
+
         setFilteredForecasts(filteredForecasts);
 
-    }, [searchQuery, selectedType])
+    }, [searchQuery, selectedType, selectedSort])
 
     return (
         <View style={styles.activity}>
@@ -224,10 +260,10 @@ const ForecastsResultScreen = () => {
                     style={styles.inputField}
                     onChangeText={setSearchQuery}
                     value={searchQuery}
-                    placeholder="Search by company name" />
+                    placeholder="Search company name" />
                 <FilterPicker />
+                <SortPicker />
             </View>
-
 
             <FlatList
                 data={filteredForecasts}
@@ -285,9 +321,10 @@ const styles = StyleSheet.create({
     },
     inputField: {
         height: 50,
+        width: 200,
         borderColor: "black",
         borderWidth: 1,
-        fontSize: properties.font.size.medium,
+        fontSize: properties.font.size.small,
         backgroundColor: properties.color.primary,
         marginBottom: 10,
         paddingLeft: 10,
@@ -333,6 +370,20 @@ const styles = StyleSheet.create({
         backgroundColor: properties.color.primary
     },
     forecastTypeSelectorDropdown: {
+        backgroundColor: properties.color.primary,
+        borderColor: 'black'
+    },
+    sortTypeSelector: {
+        width: 125,
+        borderWidth: 1,
+        borderColor: 'black',
+        backgroundColor: properties.color.primary
+    },
+    sortTypeSelectorItem: {
+        justifyContent: 'flex-start',
+        backgroundColor: properties.color.primary
+    },
+    sortTypeSelectorDropdown: {
         backgroundColor: properties.color.primary,
         borderColor: 'black'
     }
