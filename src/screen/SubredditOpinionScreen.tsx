@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet, ToastAndroid, ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { TextInput } from "react-native-gesture-handler";
@@ -24,6 +24,7 @@ const SubredditOpinionScreen = () => {
         "investing", "wallstreetbets"
     ])
 
+    const [{ loading: subredditsLoading, data: subredditsData }, subredditsExecute] = useAxios(`${properties.url.community}/api/subreddits`);
     const [{ loading: subredditOpinionsLoading }, subredditOpinionsExecute] = useAxios(
         {
             url: `${properties.url.community}/api/subreddit/${selectedSubreddit}/opinions?stockSymbol=${stock}&dateRange=DAY`,
@@ -31,6 +32,13 @@ const SubredditOpinionScreen = () => {
         },
         { manual: true }
     )
+
+    useEffect(() => {
+        if (subredditsData) {
+            const subreddits = subredditsData.map(subreddit => subreddit.name);
+            setAvailableSubreddits(subreddits);
+        }
+    }, [subredditsData])
 
     const retrieveOpinions = async () => {
 
@@ -61,6 +69,8 @@ const SubredditOpinionScreen = () => {
 
         if (selectedSubreddit == "") {
             errorMessage = "Select subreddit";
+        } else if (stock == "") {
+            errorMessage = "Enter stock symbol"
         }
 
         return errorMessage;
@@ -86,7 +96,7 @@ const SubredditOpinionScreen = () => {
                 style={styles.inputField}
                 onChangeText={setStock}
                 value={stock}
-                placeholder="Optional" />
+                placeholder="Stock symbol" />
 
             <View style={styles.buttonContainer}>
                 {subredditOpinionsLoading ?
