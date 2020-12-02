@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, ToastAndroid } from "react-native";
+import { Text, View, StyleSheet, ToastAndroid, ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { TextInput } from "react-native-gesture-handler";
 import useAxios from "axios-hooks";
@@ -66,10 +66,17 @@ const ForecastsScreen = () => {
                 value={username}
             />
             <View style={styles.buttonContainer}>
-                <Button
-                    style={styles.button}
-                    onPress={retrieveForecasts}
-                    text="Analyse" />
+                {forecastLoading ?
+                    <ActivityIndicator
+                        color={properties.color.primary}
+                        size={50}
+                        style={{ marginRight: 50 }} />
+                    :
+                    <Button
+                        style={styles.button}
+                        onPress={retrieveForecasts}
+                        text="Analyse" />
+                }
             </View>
         </View>
     );
@@ -90,7 +97,7 @@ const styles = StyleSheet.create({
         padding: 25
     },
     buttonContainer: {
-        alignItems: "flex-end"
+        alignItems: "flex-end",
     },
     inputLabel: {
         fontSize: properties.font.size.medium,
