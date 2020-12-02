@@ -9,6 +9,7 @@ import ForecastsScreen from "./screen/ForecastsScreen";
 import ForecastsResultScreen from "./screen/ForecastsResultScreen";
 import { StyleSheet } from "react-native";
 import properties from "./properties/properties";
+import SubredditOpinionScreen from "./screen/SubredditOpinionScreen";
 
 const Stack = createStackNavigator();
 
@@ -25,6 +26,7 @@ const Index = () => {
                 <Stack.Screen name="Home" component={HomeScreen} />
                 <Stack.Screen name="Forecasts" component={ForecastsScreen} />
                 <Stack.Screen name="ForecastsResults" component={ForecastsResultScreen} />
+                <Stack.Screen name="SubredditOpinion" component={SubredditOpinionScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     );

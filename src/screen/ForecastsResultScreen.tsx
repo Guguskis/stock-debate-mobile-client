@@ -164,7 +164,9 @@ const ForecastsResultScreen = () => {
     const [unsuccessfulRatio, setUnsuccessfulRatio] = useState(0);
     const [ongoingRatio, setOngoingRatio] = useState(0);
 
-    Keyboard.dismiss();
+    useEffect(() => {
+        Keyboard.dismiss();
+    }, [])
 
     useEffect(() => {
         if (filteredForecasts) {
