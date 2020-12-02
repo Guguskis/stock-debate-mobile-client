@@ -4,6 +4,7 @@ import { useRoute } from "@react-navigation/native";
 import properties from "../properties/properties";
 import { TextInput } from "react-native-gesture-handler";
 import images from "../assets/images";
+import DropDownPicker from "react-native-dropdown-picker";
 
 interface Forecast {
     stock: {
@@ -147,8 +148,7 @@ const filterForecastsByQuery = (query: string, forecasts: Array<Forecast>) => {
     });
 }
 
-// sort expirationDate, successCoeff
-// filter by optionType
+
 
 const ForecastsResultScreen = () => {
     const route = useRoute();
@@ -158,6 +158,7 @@ const ForecastsResultScreen = () => {
     const [filteredForecasts, setFilteredForecasts] = useState<Array<Forecast>>(parseForecasts(route.params?.redditUser.forecasts));
 
     const [searchQuery, setSearchQuery] = useState("");
+    const [selectedType, setSelectedType] = useState("");
     const [successfulRatio, setSuccessfulRatio] = useState(0);
     const [unsuccessfulRatio, setUnsuccessfulRatio] = useState(0);
     const [ongoingRatio, setOngoingRatio] = useState(0);
@@ -170,11 +171,36 @@ const ForecastsResultScreen = () => {
         }
     }, [filteredForecasts]);
 
+    // sort expirationDate, successCoeff
+
+    const FilterPicker = () => {
+        return (
+            <DropDownPicker
+                style={styles.forecastTypeSelector}
+                itemStyle={styles.forecastTypeSelectorItem}
+                dropDownStyle={styles.forecastTypeSelectorDropdown}
+                items={[
+                    { label: 'Type', value: '', },
+                    { label: 'Call', value: 'CALL', },
+                    { label: 'Put', value: 'PUT' },
+                ]}
+                placeholder="Type"
+                defaultValue={selectedType}
+                onChangeItem={item => setSelectedType(item.value)}
+            />
+        )
+    }
+
     useEffect(() => {
         let filteredForecasts = filterForecastsByQuery(searchQuery, forecasts);
+
+        if (selectedType != "") {
+            filteredForecasts = filteredForecasts.filter(forecast => forecast.forecastType === selectedType);
+        }
+
         setFilteredForecasts(filteredForecasts);
 
-    }, [searchQuery])
+    }, [searchQuery, selectedType])
 
     return (
         <View style={styles.activity}>
@@ -193,11 +219,15 @@ const ForecastsResultScreen = () => {
                     ratio={ongoingRatio} />
             </View>
 
-            <TextInput
-                style={styles.inputField}
-                onChangeText={setSearchQuery}
-                value={searchQuery}
-                placeholder="Search by company name" />
+            <View style={styles.filterContainer}>
+                <TextInput
+                    style={styles.inputField}
+                    onChangeText={setSearchQuery}
+                    value={searchQuery}
+                    placeholder="Search by company name" />
+                <FilterPicker />
+            </View>
+
 
             <FlatList
                 data={filteredForecasts}
@@ -285,5 +315,25 @@ const styles = StyleSheet.create({
     },
     forecastItemDetails: {
         marginRight: 20
+    },
+    filterContainer: {
+        width: '100%',
+        height: 50,
+        flexDirection: "row",
+        marginBottom: 10,
+    },
+    forecastTypeSelector: {
+        width: 75,
+        borderWidth: 1,
+        borderColor: 'black',
+        backgroundColor: properties.color.primary
+    },
+    forecastTypeSelectorItem: {
+        justifyContent: 'flex-start',
+        backgroundColor: properties.color.primary
+    },
+    forecastTypeSelectorDropdown: {
+        backgroundColor: properties.color.primary,
+        borderColor: 'black'
     }
 });
