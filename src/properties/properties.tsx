@@ -3,7 +3,8 @@ export default {
         text: 'white',
         primary: '#299',
         secondary: '#31326f',
-        background: '#333'
+        background: '#333',
+        logoBackground: 'rgba(255, 255, 255, 0.5)'
     },
     font: {
         size: {
