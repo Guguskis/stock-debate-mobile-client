@@ -16,7 +16,7 @@ const marshallToDropdownFormat = (names: Array<String>) => {
         return { label: label, value: name };
     })
 
-    items.push({ label: "All", value: "" })
+    items.unshift({ label: "All", value: "" })
 
     return items
 }
