@@ -35,12 +35,14 @@ const SubredditOpinionResultsScreen = () => {
                 curve={shape.curveNatural}
                 showGrid={false} />
 
-            <Button text="D" onPress={() => updateOpinions(subreddit, stock, "DAY")} />
-            <Button text="W" onPress={() => updateOpinions(subreddit, stock, "WEEK")} />
-            <Button text="1M" onPress={() => updateOpinions(subreddit, stock, "MONTH")} />
-            <Button text="3M" onPress={() => updateOpinions(subreddit, stock, "THREE_MONTHS")} />
-            <Button text="6M" onPress={() => updateOpinions(subreddit, stock, "SIX_MONTHS")} />
-            <Button text="Y" onPress={() => updateOpinions(subreddit, stock, "YEAR")} />
+            <View style={styles.dateRangeButtonContainer}>
+                <Button style={styles.dateRangeButton} text="D" onPress={() => updateOpinions(subreddit, stock, "DAY")} />
+                <Button style={styles.dateRangeButton} text="W" onPress={() => updateOpinions(subreddit, stock, "WEEK")} />
+                <Button style={styles.dateRangeButton} text="1M" onPress={() => updateOpinions(subreddit, stock, "MONTH")} />
+                <Button style={styles.dateRangeButton} text="3M" onPress={() => updateOpinions(subreddit, stock, "THREE_MONTHS")} />
+                <Button style={styles.dateRangeButton} text="6M" onPress={() => updateOpinions(subreddit, stock, "SIX_MONTHS")} />
+                <Button style={styles.dateRangeButton} text="Y" onPress={() => updateOpinions(subreddit, stock, "YEAR")} />
+            </View>
         </View>
     );
 }
@@ -52,23 +54,30 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         backgroundColor: properties.color.background,
+        padding: 10
     },
     button: {
         width: 250,
         height: 50,
         margin: 5,
     },
-    buttonContainer: {
-        flexDirection: "column",
-        justifyContent: "center",
-    },
     title: {
         marginBottom: 50
     },
     chart: {
-        borderWidth: 1,
         height: 300,
         width: '100%'
+    },
+    dateRangeButtonContainer: {
+        borderWidth: 1,
+        flexDirection: "row",
+        width: '100%',
+        backgroundColor: properties.color.primary,
+        justifyContent: "space-evenly"
+    },
+    dateRangeButton: {
+        width: 50,
+        margin: 1
     }
 });
 
