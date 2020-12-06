@@ -19,7 +19,7 @@ const SubredditOpinionResultsScreen = () => {
             "DAY"
         );
 
-    const colors = ['#ff0000', '#00ff00', '#333333']
+    const colors = ['#ff0000', '#00ff00', '#aaaaaa']
     const keys = ['sellCount', 'buyCount', 'neutralCount']
 
     return (
@@ -29,19 +29,20 @@ const SubredditOpinionResultsScreen = () => {
             <StackedAreaChart
                 style={styles.chart}
                 data={opinionsDetails}
-                yMax={getMaxOpinionsPerStep(opinionsDetails) / 2}
+                // yMax={getMaxOpinionsPerStep(opinionsDetails)}
                 keys={keys}
                 colors={colors}
                 curve={shape.curveNatural}
                 showGrid={false} />
 
             <View style={styles.dateRangeButtonContainer}>
-                <Button style={styles.dateRangeButton} text="D" onPress={() => updateOpinions(subreddit, stock, "DAY")} />
-                <Button style={styles.dateRangeButton} text="W" onPress={() => updateOpinions(subreddit, stock, "WEEK")} />
+                <Button style={styles.dateRangeButton} text="D " onPress={() => updateOpinions(subreddit, stock, "DAY")} />
+                <Button style={styles.dateRangeButton} text="2D" onPress={() => updateOpinions(subreddit, stock, "TWO_DAYS")} />
+                <Button style={styles.dateRangeButton} text="5D" onPress={() => updateOpinions(subreddit, stock, "FIVE_DAYS")} />
+                <Button style={styles.dateRangeButton} text="2W" onPress={() => updateOpinions(subreddit, stock, "TWO_WEEKS")} />
                 <Button style={styles.dateRangeButton} text="1M" onPress={() => updateOpinions(subreddit, stock, "MONTH")} />
                 <Button style={styles.dateRangeButton} text="3M" onPress={() => updateOpinions(subreddit, stock, "THREE_MONTHS")} />
-                <Button style={styles.dateRangeButton} text="6M" onPress={() => updateOpinions(subreddit, stock, "SIX_MONTHS")} />
-                <Button style={styles.dateRangeButton} text="Y" onPress={() => updateOpinions(subreddit, stock, "YEAR")} />
+                <Button style={styles.dateRangeButton} text="Y " onPress={() => updateOpinions(subreddit, stock, "YEAR")} />
             </View>
         </View>
     );

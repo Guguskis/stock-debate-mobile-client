@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, ToastAndroid, ActivityIndicator } from "react-native";
+import { Text, View, StyleSheet, ToastAndroid, ActivityIndicator, Keyboard } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { TextInput } from "react-native-gesture-handler";
 import useAxios from "axios-hooks";
@@ -30,6 +30,7 @@ const ForecastsScreen = () => {
         try {
             const { data: redditUser } = await forecastsExecute();
 
+            Keyboard.dismiss();
             navigation.navigate("ForecastsResults", {
                 redditUser: redditUser
             });
