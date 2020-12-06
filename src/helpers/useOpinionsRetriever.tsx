@@ -22,14 +22,15 @@ interface ParsedOpinionsDetail {
 const useOpinionsRetriever = (subredditProps: string, stockProps: string, dateRangeProps: string) => {
 
     const [subreddit, setSubreddit] = useState(subredditProps);
-    const [stock, setStock] = useState(stockProps);
+    const [stockSymbol, setStock] = useState(stockProps);
     const [dateRange, setDateRange] = useState(dateRangeProps);
 
     const [opinionsDetails, setOpinionsDetails] = useState<Array<ParsedOpinionsDetail>>([]);
 
     const [{ loading: requestLoading, data: requestData }, subredditOpinionsExecute] = useAxios(
         {
-            url: `${properties.url.community}/api/subreddit/${subreddit}/opinions?stockSymbol=${stock}&dateRange=${dateRange}`,
+            url: `${properties.url.community}/api/subreddit/opinions`,
+            params: { subreddit: subreddit, dateRange: dateRange, stockSymbol: stockSymbol },
             method: 'GET'
         },
         { manual: true }
@@ -42,12 +43,12 @@ const useOpinionsRetriever = (subredditProps: string, stockProps: string, dateRa
     }
 
     useEffect(() => {
-        if (subreddit && stock && dateRange) {
+        if (subreddit && stockSymbol && dateRange) {
             subredditOpinionsExecute();
         } else {
             console.log("Unable to retrieve opinions, because one of variables is empty");
         }
-    }, [subreddit, stock, dateRange]);
+    }, [subreddit, stockSymbol, dateRange]);
 
     useEffect(() => {
         if (requestData) {
@@ -64,7 +65,7 @@ const useOpinionsRetriever = (subredditProps: string, stockProps: string, dateRa
         }
     }, [requestData]);
 
-    return { subreddit, stock, dateRange, opinionsDetails, requestLoading, updateOpinions };
+    return { subreddit, stock: stockSymbol, dateRange, opinionsDetails, requestLoading, updateOpinions };
 }
 
 export default useOpinionsRetriever;
