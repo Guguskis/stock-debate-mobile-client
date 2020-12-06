@@ -29,11 +29,12 @@ const SubredditOpinionResultsScreen = () => {
             <StackedAreaChart
                 style={styles.chart}
                 data={opinionsDetails}
+                yMax={getMaxOpinionsPerStep(opinionsDetails) / 2}
                 keys={keys}
                 colors={colors}
                 curve={shape.curveNatural}
-                showGrid={false}
-            />
+                showGrid={false} />
+
             <Button text="D" onPress={() => updateOpinions(subreddit, stock, "DAY")} />
             <Button text="W" onPress={() => updateOpinions(subreddit, stock, "WEEK")} />
             <Button text="1M" onPress={() => updateOpinions(subreddit, stock, "MONTH")} />
@@ -65,7 +66,17 @@ const styles = StyleSheet.create({
         marginBottom: 50
     },
     chart: {
-        height: '50%',
+        borderWidth: 1,
+        height: 300,
         width: '100%'
     }
 });
+
+const getMaxOpinionsPerStep = (opinions: any) => {
+    const opinionsPerSteps = opinions
+        .map(opinion => opinion.sellCount + opinion.buyCount + opinion.neutralCount)
+
+    if (opinionsPerSteps.length == 0) return 0;
+
+    return Math.max(...opinionsPerSteps);
+}
