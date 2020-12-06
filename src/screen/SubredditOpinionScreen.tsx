@@ -9,10 +9,16 @@ import properties from "../properties/properties";
 import DropDownPicker from "react-native-dropdown-picker";
 
 const marshallToDropdownFormat = (names: Array<String>) => {
-    return names.map(name => {
-        const label = name[0].toUpperCase() + name.substring(1, name.length);
+    const items = names.map(name => {
+        const upperFirstChar = name[0].toUpperCase();
+        const remainingChars = name.substring(1, name.length);
+        const label = upperFirstChar + remainingChars;
         return { label: label, value: name };
     })
+
+    items.push({ label: "All", value: "" })
+
+    return items
 }
 
 const SubredditOpinionScreen = () => {
@@ -68,9 +74,7 @@ const SubredditOpinionScreen = () => {
     const getInputFieldValidationMessage = () => {
         let errorMessage = "";
 
-        if (selectedSubreddit == "") {
-            errorMessage = "Select subreddit";
-        } else if (stock == "") {
+        if (stock == "") {
             errorMessage = "Enter stock symbol"
         }
 

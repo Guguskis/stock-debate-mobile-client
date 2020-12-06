@@ -26,6 +26,7 @@ const SubredditOpinionResultsScreen = () => {
         <View style={styles.activity}>
             <Title style={styles.title} />
 
+
             <StackedAreaChart
                 style={styles.chart}
                 data={opinionsDetails}
@@ -74,11 +75,15 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         width: '100%',
         backgroundColor: properties.color.primary,
-        justifyContent: "space-evenly"
+        justifyContent: "space-evenly",
+        borderBottomLeftRadius: 25,
+        borderBottomRightRadius: 25
     },
     dateRangeButton: {
         width: 50,
-        margin: 1
+        fontSize: properties.font.size.medium,
+        margin: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0)'
     }
 });
 

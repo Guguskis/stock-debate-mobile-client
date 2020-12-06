@@ -11,7 +11,7 @@ interface Props {
 const Button = (props: Props,) => {
     return (
         <TouchableOpacity style={props.style} onPress={props.onPress}>
-            <Text style={[props.style, styles.text]}>
+            <Text style={[styles.text, props.style]}>
                 {props.text}
             </Text>
         </TouchableOpacity >

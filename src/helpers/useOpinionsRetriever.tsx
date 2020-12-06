@@ -43,7 +43,7 @@ const useOpinionsRetriever = (subredditProps: string, stockProps: string, dateRa
     }
 
     useEffect(() => {
-        if (subreddit && stockSymbol && dateRange) {
+        if (stockSymbol && dateRange) {
             subredditOpinionsExecute();
         } else {
             console.log("Unable to retrieve opinions, because one of variables is empty");
