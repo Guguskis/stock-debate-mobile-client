@@ -66,8 +66,14 @@ const SubredditOpinionResultsScreen = () => {
 
     return (
         <View style={styles.activity}>
-            <Title style={styles.title} />
+            <Title
+                style={styles.title}
+                text={"Opinions"} />
 
+            <Text
+                style={styles.description}>
+                {`r/${subreddit === "" ? "all" : subreddit} talks about ${stockSymbol}`}
+            </Text>
 
             <StackedAreaChart
                 style={styles.chart}
@@ -99,7 +105,7 @@ const styles = StyleSheet.create({
         margin: 5,
     },
     title: {
-        marginBottom: 50
+        marginBottom: 10
     },
     chart: {
         height: 300,
@@ -119,6 +125,10 @@ const styles = StyleSheet.create({
         fontSize: properties.font.size.medium,
         margin: 1,
         backgroundColor: 'rgba(0, 0, 0, 0)'
+    },
+    description: {
+        fontSize: properties.font.size.large,
+        color: properties.color.text
     }
 });
 

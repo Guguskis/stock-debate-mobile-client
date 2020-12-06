@@ -3,13 +3,14 @@ import { Text, StyleProp, StyleSheet } from "react-native";
 import properties from "../properties/properties";
 
 interface Props {
-    style?: StyleProp<any>
+    style?: StyleProp<any>;
+    text?: "StockDebate"
 }
 
 const Title = (props: Props) => {
     return (
         <Text style={[props.style, styles.text]}>
-            StockDebate
+            {props.text}
         </Text>
     );
 }
