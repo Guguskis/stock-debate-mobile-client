@@ -17,6 +17,7 @@ export default {
     url: {
         autentification: "http://192.168.43.170:8081",
         stockDebateApi: "http://192.168.43.170:8082",
-        community: "http://192.168.43.170:8085"
+        community: "http://192.168.43.170:8085",
+        stock: "http://192.168.43.170:8083",
     }
 }
