@@ -72,7 +72,7 @@ export default useOpinionsRetriever;
 const getOpinionCount = (opinionsDetail: OpinionsDetail, type: string) => {
     return opinionsDetail.aggregatedOpinions
         .filter(detail => detail.type == type)
-        .map(detail => detail.count);
+        .map(detail => detail.count)[0];
 }
 
 const parseDate = (dateArray: Array<number>) => {
