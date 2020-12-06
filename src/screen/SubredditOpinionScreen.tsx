@@ -51,7 +51,7 @@ const SubredditOpinionScreen = () => {
 
             navigation.navigate("SubredditOpinionResults", {
                 subreddit: selectedSubreddit,
-                stockSymbol: stock
+                stock: stock
             });
 
         } catch (err) {
