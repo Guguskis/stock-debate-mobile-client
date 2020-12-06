@@ -20,14 +20,12 @@ const SubredditOpinionScreen = () => {
 
     const [stock, setStock] = useState("");
     const [selectedSubreddit, setSelectedSubreddit] = useState("");
-    const [availableSubreddits, setAvailableSubreddits] = useState([
-        "investing", "wallstreetbets"
-    ])
+    const [availableSubreddits, setAvailableSubreddits] = useState([]);
 
     const [{ loading: subredditsLoading, data: subredditsData }, subredditsExecute] = useAxios(`${properties.url.community}/api/subreddits`);
-    const [{ loading: subredditOpinionsLoading }, subredditOpinionsExecute] = useAxios(
+    const [{ loading: getStockLoading }, getStock] = useAxios(
         {
-            url: `${properties.url.community}/api/subreddit/${selectedSubreddit}/opinions?stockSymbol=${stock}&dateRange=DAY`,
+            url: `${properties.url.stock}/api/stock/${stock}`,
             method: 'GET'
         },
         { manual: true }
@@ -49,11 +47,13 @@ const SubredditOpinionScreen = () => {
         }
 
         try {
-            const { data: subredditOpinions } = await subredditOpinionsExecute();
+            const { data: stock } = await getStock();
 
             navigation.navigate("SubredditOpinionResults", {
-                subredditOpinions: subredditOpinions
+                subreddit: selectedSubreddit,
+                stockSymbol: stock
             });
+
         } catch (err) {
             let errorMessage = err?.response?.data;
             ToastAndroid.show(errorMessage, ToastAndroid.LONG);
@@ -99,7 +99,7 @@ const SubredditOpinionScreen = () => {
                 placeholder="Stock symbol" />
 
             <View style={styles.buttonContainer}>
-                {subredditOpinionsLoading ?
+                {getStockLoading ?
                     <ActivityIndicator
                         color={properties.color.primary}
                         size={50}
