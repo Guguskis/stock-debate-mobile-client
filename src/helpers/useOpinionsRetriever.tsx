@@ -27,7 +27,7 @@ const useOpinionsRetriever = (subredditProps: string, stockProps: string, dateRa
 
     const [opinionsDetails, setOpinionsDetails] = useState<Array<ParsedOpinionsDetail>>([]);
 
-    const [{ loading: requestLoading, data: requestData }, subredditOpinionsExecute] = useAxios(
+    const [{ loading: requestLoading, data: requestData, error: error }, subredditOpinionsExecute] = useAxios(
         {
             url: `${properties.url.community}/api/subreddit/opinions`,
             params: { subreddit: subreddit, dateRange: dateRange, stockSymbol: stockSymbol },
@@ -36,9 +36,7 @@ const useOpinionsRetriever = (subredditProps: string, stockProps: string, dateRa
         { manual: true }
     )
 
-    const updateOpinions = (subreddit: string, stock: string, dateRange: string) => {
-        setSubreddit(subreddit);
-        setStock(stock);
+    const updateOpinions = (dateRange: string) => {
         setDateRange(dateRange);
     }
 
@@ -62,6 +60,8 @@ const useOpinionsRetriever = (subredditProps: string, stockProps: string, dateRa
                 };
             })
             setOpinionsDetails(parsedOpinionsDetails);
+        } else {
+            console.log(error);
         }
     }, [requestData]);
 

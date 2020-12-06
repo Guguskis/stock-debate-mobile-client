@@ -9,10 +9,52 @@ import properties from "../properties/properties";
 import Title from "../common/Title";
 import useOpinionsRetriever from "../helpers/useOpinionsRetriever";
 
+const DATE_RANGES = [
+    { label: "D ", value: "DAY" },
+    { label: "2D", value: "TWO_DAYS" },
+    { label: "5D", value: "FIVE_DAYS" },
+    { label: "2W", value: "TWO_WEEKS" },
+    { label: "1M", value: "MONTH" },
+    { label: "D ", value: "THREE_MONTHS" },
+    { label: "Y ", value: "YEAR" },
+]
+
+interface ButtonContainerProps {
+    updateOpinions: (dateRange: string) => void;
+}
+
+const ButtonContainer = (props: ButtonContainerProps) => {
+
+    const [activeButtonIndex, setActiveButtonIndex] = useState(0);
+
+    const toDateRangeButton = (dateRange: { label: string; value: string; }, index: number) => {
+
+        const handleOnPress = () => {
+            setActiveButtonIndex(index);
+            props.updateOpinions(dateRange.value)
+        }
+
+        return (
+            <Button
+                style={[
+                    styles.dateRangeButton,
+                    { backgroundColor: activeButtonIndex == index ? properties.color.primaryDark : null }]}
+                text={dateRange.label}
+                onPress={handleOnPress} />
+        );
+    };
+
+    return (
+        <View style={styles.dateRangeButtonContainer}>
+            {DATE_RANGES.map(toDateRangeButton)}
+        </View>
+    )
+}
+
 const SubredditOpinionResultsScreen = () => {
     const route = useRoute();
 
-    const { subreddit, stock, dateRange, opinionsDetails, updateOpinions }
+    const { subreddit, stock: stockSymbol, dateRange, opinionsDetails, updateOpinions }
         = useOpinionsRetriever(
             route?.params.subreddit,
             route?.params.stock.symbol,
@@ -30,21 +72,14 @@ const SubredditOpinionResultsScreen = () => {
             <StackedAreaChart
                 style={styles.chart}
                 data={opinionsDetails}
-                // yMax={getMaxOpinionsPerStep(opinionsDetails)}
+                yMax={getMaxOpinionsPerStep(opinionsDetails) * 1.25}
                 keys={keys}
                 colors={colors}
                 curve={shape.curveNatural}
                 showGrid={false} />
 
-            <View style={styles.dateRangeButtonContainer}>
-                <Button style={styles.dateRangeButton} text="D " onPress={() => updateOpinions(subreddit, stock, "DAY")} />
-                <Button style={styles.dateRangeButton} text="2D" onPress={() => updateOpinions(subreddit, stock, "TWO_DAYS")} />
-                <Button style={styles.dateRangeButton} text="5D" onPress={() => updateOpinions(subreddit, stock, "FIVE_DAYS")} />
-                <Button style={styles.dateRangeButton} text="2W" onPress={() => updateOpinions(subreddit, stock, "TWO_WEEKS")} />
-                <Button style={styles.dateRangeButton} text="1M" onPress={() => updateOpinions(subreddit, stock, "MONTH")} />
-                <Button style={styles.dateRangeButton} text="3M" onPress={() => updateOpinions(subreddit, stock, "THREE_MONTHS")} />
-                <Button style={styles.dateRangeButton} text="Y " onPress={() => updateOpinions(subreddit, stock, "YEAR")} />
-            </View>
+            <ButtonContainer
+                updateOpinions={updateOpinions} />
         </View>
     );
 }
@@ -80,7 +115,7 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 25
     },
     dateRangeButton: {
-        width: 50,
+        width: 35,
         fontSize: properties.font.size.medium,
         margin: 1,
         backgroundColor: 'rgba(0, 0, 0, 0)'

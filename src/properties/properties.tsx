@@ -2,6 +2,7 @@ export default {
     color: {
         text: 'white',
         primary: '#299',
+        primaryDark: '#077',
         secondary: '#31326f',
         background: '#333',
         logoBackground: 'rgba(255, 255, 255, 1)'
