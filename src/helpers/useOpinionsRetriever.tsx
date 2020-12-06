@@ -25,7 +25,7 @@ const useOpinionsRetriever = (subredditProps: string, stockProps: string, dateRa
     const [stock, setStock] = useState(stockProps);
     const [dateRange, setDateRange] = useState(dateRangeProps);
 
-    const [opinionsDetails, setOpinionsDetails] = useState<Array<ParsedOpinionsDetail>>();
+    const [opinionsDetails, setOpinionsDetails] = useState<Array<ParsedOpinionsDetail>>([]);
 
     const [{ loading: requestLoading, data: requestData }, subredditOpinionsExecute] = useAxios(
         {
