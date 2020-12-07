@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import { StackedAreaChart } from 'react-native-svg-charts'
+import { Grid, StackedAreaChart, YAxis } from 'react-native-svg-charts'
 import * as shape from 'd3-shape'
 
 import Button from "../common/Button";
@@ -72,15 +72,27 @@ const SubredditOpinionResultsScreen = () => {
                 {`r/${subreddit === "" ? "all" : subreddit} talks about ${stockSymbol}`}
             </Text>
 
-            <StackedAreaChart
-                style={styles.chart}
-                data={opinionsDetails}
-                yMax={getMaxOpinionsPerStep(opinionsDetails) * 1.25}
-                // add axis styling
-                keys={keys}
-                colors={colors}
-                curve={shape.curveNatural}
-                showGrid={false} />
+            <View style={styles.chartContainer}>
+
+                <StackedAreaChart
+                    style={{ flex: 1 }}
+                    data={opinionsDetails}
+                    keys={keys}
+                    colors={colors}
+                    curve={shape.curveBasis}
+                    animate={true}>
+                    <Grid />
+                </StackedAreaChart>
+                <YAxis
+                    style={styles.yAxis}
+                    data={StackedAreaChart.extractDataPoints(opinionsDetails, keys)}
+                    svg={{
+                        fontSize: 12,
+                        fill: properties.color.primary,
+                        stroke: 'white',
+                        strokeWidth: 0.1,
+                    }} />
+            </View>
 
             <ButtonContainer
                 updateOpinions={updateOpinions} />
@@ -95,7 +107,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         backgroundColor: properties.color.background,
-        padding: 10
+        padding: 15
     },
     button: {
         width: 250,
@@ -105,9 +117,10 @@ const styles = StyleSheet.create({
     title: {
         marginBottom: 10
     },
-    chart: {
+    chartContainer: {
         height: 300,
-        width: '100%'
+        width: '100%',
+        flexDirection: "row"
     },
     dateRangeButtonContainer: {
         borderWidth: 1,
@@ -126,7 +139,13 @@ const styles = StyleSheet.create({
     },
     description: {
         fontSize: properties.font.size.large,
-        color: properties.color.text
+        color: properties.color.text,
+        marginBottom: 50
+    },
+    yAxis: {
+        position: 'absolute',
+        top: 0,
+        bottom: 0
     }
 });
 
