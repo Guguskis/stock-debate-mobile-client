@@ -36,6 +36,7 @@ const ButtonContainer = (props: ButtonContainerProps) => {
 
         return (
             <Button
+                key={index.toString()}
                 style={[
                     styles.dateRangeButton,
                     { backgroundColor: activeButtonIndex == index ? properties.color.primaryDark : null }]}
@@ -79,6 +80,7 @@ const SubredditOpinionResultsScreen = () => {
                 style={styles.chart}
                 data={opinionsDetails}
                 yMax={getMaxOpinionsPerStep(opinionsDetails) * 1.25}
+                // add axis styling
                 keys={keys}
                 colors={colors}
                 curve={shape.curveNatural}
