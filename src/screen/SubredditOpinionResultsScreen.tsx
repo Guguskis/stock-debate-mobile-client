@@ -56,11 +56,7 @@ const SubredditOpinionResultsScreen = () => {
     const route = useRoute();
 
     const { subreddit, stock: stockSymbol, dateRange, opinionsDetails, updateOpinions }
-        = useOpinionsRetriever(
-            route?.params.subreddit,
-            route?.params.stock.symbol,
-            "DAY"
-        );
+        = useOpinionsRetriever(route?.params.subreddit, route?.params.stock.symbol, "DAY");
 
     const colors = ['#ff0000', '#00ff00', '#aaaaaa']
     const keys = ['sellCount', 'buyCount', 'neutralCount']
