@@ -6,6 +6,7 @@ import useAxios from "axios-hooks";
 
 import Button from "../common/Button";
 import properties from "../properties/properties";
+import Title from "../common/Title";
 
 const ForecastsScreen = () => {
     const navigation = useNavigation();
@@ -57,10 +58,9 @@ const ForecastsScreen = () => {
 
     return (
         <View style={styles.activity}>
+            <Title style={styles.title} text="Forecasts" />
 
-            <Text style={styles.inputLabel}>
-                Username
-            </Text>
+            <Text style={styles.inputLabel}>Username</Text>
             <TextInput
                 style={styles.inputField}
                 onChangeText={setUsername}
@@ -86,6 +86,9 @@ const ForecastsScreen = () => {
 export default ForecastsScreen;
 
 const styles = StyleSheet.create({
+    title: {
+        marginBottom: 50
+    },
     button: {
         width: 150,
         height: 50

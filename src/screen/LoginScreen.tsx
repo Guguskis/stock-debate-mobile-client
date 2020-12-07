@@ -6,6 +6,7 @@ import properties from "../properties/properties";
 import { TextInput } from "react-native-gesture-handler";
 import useAxios from "axios-hooks";
 import { GLOBAL } from "../properties/globalState";
+import Title from "../common/Title";
 
 
 const LoginScreen = () => {
@@ -66,6 +67,7 @@ const LoginScreen = () => {
     return (
         <View style={styles.activity}>
 
+            <Title style={styles.title} text="StockDebate" />
             <Text style={styles.inputLabel}>
                 Username
             </Text>
@@ -102,6 +104,9 @@ const LoginScreen = () => {
 export default LoginScreen;
 
 const styles = StyleSheet.create({
+    title: {
+        marginBottom: 100
+    },
     button: {
         width: 150,
         height: 50

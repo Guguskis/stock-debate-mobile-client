@@ -7,6 +7,7 @@ import useAxios from "axios-hooks";
 import Button from "../common/Button";
 import properties from "../properties/properties";
 import DropDownPicker from "react-native-dropdown-picker";
+import Title from "../common/Title";
 
 const marshallToDropdownFormat = (names: Array<String>) => {
     const items = names.map(name => {
@@ -62,6 +63,7 @@ const TrendingScreen = () => {
 
     return (
         <View style={styles.activity}>
+            <Title style={styles.title} text="Trending" />
 
             <Text style={styles.inputLabel}>Subreddit</Text>
             <DropDownPicker
@@ -95,6 +97,9 @@ const TrendingScreen = () => {
 export default TrendingScreen;
 
 const styles = StyleSheet.create({
+    title: {
+        marginBottom: 50
+    },
     button: {
         width: 150,
         height: 50

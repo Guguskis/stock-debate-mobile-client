@@ -12,7 +12,7 @@ const HomeScreen = () => {
     return (
         <View style={styles.activity}>
 
-            <Title style={styles.title} />
+            <Title style={styles.title} text="StockDebate" />
             <View style={styles.buttonContainer}>
                 <Button
                     style={styles.button}

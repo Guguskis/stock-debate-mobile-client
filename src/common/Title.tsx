@@ -4,12 +4,12 @@ import properties from "../properties/properties";
 
 interface Props {
     style?: StyleProp<any>;
-    text?: "StockDebate"
+    text: string
 }
 
 const Title = (props: Props) => {
     return (
-        <Text style={[props.style, styles.text]}>
+        <Text style={[styles.text, props.style]}>
             {props.text}
         </Text>
     );

@@ -4,6 +4,7 @@ import { useRoute } from "@react-navigation/native";
 import properties from "../properties/properties";
 import { TextInput } from "react-native-gesture-handler";
 import DropDownPicker from "react-native-dropdown-picker";
+import Title from "../common/Title";
 
 interface Trend {
     stock: {
@@ -107,8 +108,8 @@ const TrendingScreenResults = () => {
 
     return (
         <View style={styles.activity}>
-            {/* <Title text={`r/${subreddit == "" ? "all" : subreddit}`} /> */}
-            <Text style={styles.subredditText}>r/{subreddit == "" ? "all" : subreddit}</Text>
+            <Title text={`r/${subreddit == "" ? "all" : subreddit}`} />
+            {/* <Text style={styles.subredditText}>r/{subreddit == "" ? "all" : subreddit}</Text> */}
 
             <View style={styles.filterContainer}>
                 <TextInput

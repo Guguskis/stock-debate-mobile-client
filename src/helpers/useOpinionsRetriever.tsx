@@ -60,8 +60,6 @@ const useOpinionsRetriever = (subredditProps: string, stockProps: string, dateRa
                 };
             })
             setOpinionsDetails(parsedOpinionsDetails);
-        } else {
-            console.log(error);
         }
     }, [requestData]);
 
