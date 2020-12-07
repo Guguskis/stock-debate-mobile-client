@@ -3,9 +3,7 @@ import { Text, View, StyleSheet, FlatList, Image, Keyboard } from "react-native"
 import { useRoute } from "@react-navigation/native";
 import properties from "../properties/properties";
 import { TextInput } from "react-native-gesture-handler";
-import images from "../assets/images";
 import DropDownPicker from "react-native-dropdown-picker";
-import Title from "../common/Title";
 
 interface Trend {
     stock: {
@@ -18,31 +16,6 @@ interface Trend {
     opinionsLastDay: number,
 }
 
-const convertToPercentsString = (value: number) => Math.round(value * 100) + '%';
-
-const getFormattedDate = (date: Date) => {
-
-    const yearBeforeNow = new Date();
-    yearBeforeNow.setFullYear(yearBeforeNow.getFullYear() - 1);
-
-    const appendPrefixZeroIfOneDigitNumber = (number: number) => {
-        let result = "";
-        if (number < 10) result += "0";
-        result += number;
-        return result;
-    }
-
-    const formattedMonth = appendPrefixZeroIfOneDigitNumber(date.getMonth() + 1);
-    const formattedDay = appendPrefixZeroIfOneDigitNumber(date.getDate());
-
-    if (date > yearBeforeNow) {
-        return `${formattedMonth}/${formattedDay}`
-    } else {
-        let year = date.getFullYear().toString().substr(2, 2);
-        return `${year}/${formattedMonth}/${formattedDay}`
-    }
-}
-
 const renderTrendItem = ({ item }: { item: Trend }) => {
 
     return (
@@ -52,11 +25,11 @@ const renderTrendItem = ({ item }: { item: Trend }) => {
                     style={styles.trendLogo}
                     source={{ uri: item.stock.logoUrl }} />
             </View>
-            <Text>{item.stock.symbol}</Text>
+            <Text style={styles.trendDetailsStockSymbol}>{item.stock.symbol}</Text>
             <View style={styles.trendDetailsContainer}>
-                <Text style={styles.trendDetailsStock}>Opinions</Text>
-                <View style={styles.trendDetailsOpinions}>
-                    <Text>Total {item.opinionsTotal} </Text>
+                <Text style={styles.trendDetailsOpinionsTitle}>Opinions</Text>
+                <View >
+                    <Text>Total       {item.opinionsTotal} </Text>
                     <Text>Last day {item.opinionsLastDay}</Text>
                 </View>
             </View>
@@ -65,20 +38,11 @@ const renderTrendItem = ({ item }: { item: Trend }) => {
     );
 }
 
-const parseForecasts = (forecasts: Array<any>): Array<Trend> => {
-    return forecasts.map(forecast => {
-        const newForecast = JSON.parse(JSON.stringify(forecast)); // deep copy
-        newForecast.expirationDate = new Date(forecast.expirationDate);
-        newForecast.createdDate = new Date(forecast.createdDate);
-        return newForecast;
-    });
-}
-
-const filterForecastsByQuery = (query: string, forecasts: Array<Trend>) => {
-    return forecasts.filter(forecast => {
+const filterTrendsByQuery = (query: string, trends: Array<Trend>) => {
+    return trends.filter(trend => {
         let lowercaseQuery = query.toLowerCase();
-        let lowercaseSymbol = forecast.stock.symbol.toLowerCase();
-        let lowercaseCompany = forecast.stock.companyName.toLowerCase();
+        let lowercaseSymbol = trend.stock.symbol.toLowerCase();
+        let lowercaseCompany = trend.stock.companyName.toLowerCase();
 
         let symbolContainsQuery = lowercaseSymbol.includes(lowercaseQuery);
         let companyContainsQuery = lowercaseCompany.includes(lowercaseQuery);
@@ -87,14 +51,12 @@ const filterForecastsByQuery = (query: string, forecasts: Array<Trend>) => {
     });
 }
 
-
-
 const TrendingScreenResults = () => {
     const route = useRoute();
 
     const [subreddit, setSubreddit] = useState(route.params?.subreddit);
-    const [trends, setTrends] = useState<Array<Trend>>(parseForecasts(route.params?.trends));
-    const [filteredTrends, setFilteredTrends] = useState<Array<Trend>>(parseForecasts(route.params?.trends));
+    const [trends, setTrends] = useState<Array<Trend>>(route.params?.trends);
+    const [filteredTrends, setFilteredTrends] = useState<Array<Trend>>(route.params?.trends);
 
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedSort, setSelectedSort] = useState("");
@@ -120,7 +82,7 @@ const TrendingScreenResults = () => {
     }
 
     useEffect(() => {
-        let filteredForecasts = filterForecastsByQuery(searchQuery, trends);
+        let filteredForecasts = filterTrendsByQuery(searchQuery, trends);
 
         if (selectedSort != "") {
             filteredForecasts = filteredForecasts.sort((trendA, trendB) => {
@@ -161,7 +123,6 @@ const TrendingScreenResults = () => {
                 data={filteredTrends}
                 renderItem={renderTrendItem}
                 keyExtractor={(trend, index) => index.toString()} />
-
         </View>
     );
 }
@@ -185,7 +146,7 @@ const styles = StyleSheet.create({
     },
     inputField: {
         height: 50,
-        width: 200,
+        width: 275,
         borderColor: "black",
         borderWidth: 1,
         fontSize: properties.font.size.small,
@@ -214,14 +175,17 @@ const styles = StyleSheet.create({
         backgroundColor: properties.color.primary,
         borderColor: 'black'
     },
-    trendDetailsStock: {
-
+    trendDetailsStockSymbol: {
+        fontSize: properties.font.size.large,
+        width: 70,
+        marginRight: 40
     },
     trendDetailsContainer: {
 
     },
-    trendDetailsOpinions: {
-
+    trendDetailsOpinionsTitle: {
+        color: properties.color.text,
+        borderBottomWidth: 1
     },
     trendLogoContainer: {
         marginRight: 20,
