@@ -13,7 +13,7 @@ interface OpinionsDetail {
 }
 
 interface ParsedOpinionsDetail {
-    month: string; // for svg chart
+    date: string;
     buyCount: number;
     sellCount: number;
     neutralCount: number;
