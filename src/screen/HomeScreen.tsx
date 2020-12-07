@@ -21,18 +21,13 @@ const HomeScreen = () => {
 
                 <Button
                     style={styles.button}
-                    onPress={() => navigation.navigate("Analysis")}
-                    text="Analysis" />
-
-                <Button
-                    style={styles.button}
                     onPress={() => navigation.navigate("SubredditOpinion")}
-                    text="Subreddit opinion" />
+                    text="Opinions" />
 
                 <Button
                     style={styles.button}
-                    onPress={() => navigation.navigate("Subscriptions")}
-                    text="Subscriptions" />
+                    onPress={() => navigation.navigate("Trending")}
+                    text="Trending" />
             </View>
         </View>
     );
