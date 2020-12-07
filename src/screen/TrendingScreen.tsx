@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
         padding: 25
     },
     buttonContainer: {
+        marginTop: 20,
         alignItems: "flex-end",
     },
     inputLabel: {
