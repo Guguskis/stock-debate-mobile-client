@@ -5,6 +5,7 @@ import properties from "../properties/properties";
 import { TextInput } from "react-native-gesture-handler";
 import images from "../assets/images";
 import DropDownPicker from "react-native-dropdown-picker";
+import Logo from "../common/Logo";
 
 interface Forecast {
     stock: {
@@ -62,12 +63,7 @@ const renderForecastItem = ({ item }: { item: Forecast }) => {
 
     return (
         <View style={styles.forecastItem}>
-            <View style={styles.forecastLogoContainer}>
-                <Image
-                    style={styles.forecastLogo}
-                    source={{ uri: item.stock.logoUrl }} />
-            </View>
-
+            <Logo source={item.stock.logoUrl} />
 
             <View style={styles.forecastItemDetails}>
                 <Text style={styles.text}>{item.forecastType} for {item.stock.symbol}</Text>
@@ -289,16 +285,6 @@ const styles = StyleSheet.create({
     inputLabel: {
         fontSize: properties.font.size.medium,
         color: properties.color.text
-    },
-    forecastLogoContainer: {
-        marginRight: 20,
-        padding: 10,
-        borderRadius: 30,
-        backgroundColor: properties.color.logoBackground
-    },
-    forecastLogo: {
-        width: 54,
-        height: 54
     },
     forecastItem: {
         height: 75,

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, FlatList, Image, Keyboard } from "react-native";
+import { Text, View, StyleSheet, FlatList } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import properties from "../properties/properties";
 import { TextInput } from "react-native-gesture-handler";
 import DropDownPicker from "react-native-dropdown-picker";
 import Title from "../common/Title";
+import Logo from "../common/Logo";
 
 interface Trend {
     stock: {
@@ -21,11 +22,7 @@ const renderTrendItem = ({ item }: { item: Trend }) => {
 
     return (
         <View style={styles.trendItem}>
-            <View style={styles.trendLogoContainer}>
-                <Image
-                    style={styles.trendLogo}
-                    source={{ uri: item.stock.logoUrl }} />
-            </View>
+            <Logo source={item.stock.logoUrl} />
             <Text style={styles.trendDetailsStockSymbol}>{item.stock.symbol}</Text>
             <View style={styles.trendDetailsContainer}>
                 <Text style={styles.trendDetailsOpinionsTitle}>Opinions</Text>
@@ -34,7 +31,6 @@ const renderTrendItem = ({ item }: { item: Trend }) => {
                     <Text>Last day {item.opinionsLastDay}</Text>
                 </View>
             </View>
-
         </View>
     );
 }
@@ -187,16 +183,6 @@ const styles = StyleSheet.create({
     trendDetailsOpinionsTitle: {
         color: properties.color.text,
         borderBottomWidth: 1
-    },
-    trendLogoContainer: {
-        marginRight: 20,
-        padding: 10,
-        borderRadius: 30,
-        backgroundColor: properties.color.logoBackground
-    },
-    trendLogo: {
-        width: 54,
-        height: 54
     },
     trendItem: {
         height: 75,
