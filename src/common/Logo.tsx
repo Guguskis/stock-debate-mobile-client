@@ -8,9 +8,9 @@ interface LogoProps {
 
 const Logo = (props: LogoProps) => {
     return (
-        <View style={styles.trendLogoContainer}>
+        <View style={styles.logoContainer}>
             <Image
-                style={styles.trendLogo}
+                style={styles.logo}
                 source={{ uri: props.source }}
                 resizeMode="contain" />
         </View>
@@ -20,7 +20,7 @@ const Logo = (props: LogoProps) => {
 export default Logo;
 
 const styles = StyleSheet.create({
-    trendLogoContainer: {
+    logoContainer: {
         width: 64,
         height: 64,
         marginRight: 20,
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: properties.color.logoBackground
     },
-    trendLogo: {
+    logo: {
         flex: 1
     },
 })
