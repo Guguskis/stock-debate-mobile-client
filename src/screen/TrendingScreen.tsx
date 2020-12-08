@@ -17,7 +17,7 @@ const marshallToDropdownFormat = (names: Array<String>) => {
         return { label: label, value: name };
     })
 
-    items.unshift({ label: "All", value: "" })
+    items.unshift({ label: "All", value: "all" })
 
     return items
 }
@@ -45,7 +45,13 @@ const TrendingScreen = () => {
         }
     }, [subredditsData])
 
-    const retrieveOpinions = async () => {
+    const retrieveTrends = async () => {
+
+        if (!inputFieldsAreValid()) {
+            let errorMessage = getInputFieldValidationMessage();
+            ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
+            return;
+        }
 
         try {
             const { data: trends } = await getTrends();
@@ -59,6 +65,20 @@ const TrendingScreen = () => {
             let errorMessage = err?.response?.data;
             ToastAndroid.show(errorMessage, ToastAndroid.LONG);
         }
+    }
+
+    const inputFieldsAreValid = () => {
+        return getInputFieldValidationMessage() == "";
+    }
+
+    const getInputFieldValidationMessage = () => {
+        let errorMessage = "";
+
+        if (selectedSubreddit == "") {
+            errorMessage = "Select subreddit"
+        }
+
+        return errorMessage;
     }
 
     return (
@@ -86,7 +106,7 @@ const TrendingScreen = () => {
                     :
                     <Button
                         style={styles.button}
-                        onPress={retrieveOpinions}
+                        onPress={retrieveTrends}
                         text="Analyse" />
                 }
             </View>

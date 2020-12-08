@@ -108,8 +108,8 @@ const TrendingScreenResults = () => {
 
     return (
         <View style={styles.activity}>
-            <Title text={`r/${subreddit == "" ? "all" : subreddit}`} />
-            {/* <Text style={styles.subredditText}>r/{subreddit == "" ? "all" : subreddit}</Text> */}
+            <Title text="Trending" />
+            <Text style={styles.subredditText}>r/{subreddit}</Text>
 
             <View style={styles.filterContainer}>
                 <TextInput
