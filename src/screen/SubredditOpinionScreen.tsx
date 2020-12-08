@@ -17,7 +17,7 @@ const marshallToDropdownFormat = (names: Array<String>) => {
         return { label: label, value: name };
     })
 
-    items.unshift({ label: "All", value: "" })
+    items.unshift({ label: "All", value: "all" })
 
     return items
 }
@@ -77,6 +77,8 @@ const SubredditOpinionScreen = () => {
 
         if (stock == "") {
             errorMessage = "Enter stock symbol"
+        } else if (selectedSubreddit == "") {
+            errorMessage = "Select subreddit"
         }
 
         return errorMessage;
