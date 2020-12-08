@@ -11,11 +11,10 @@ import useOpinionsRetriever from "../helpers/useOpinionsRetriever";
 
 const DATE_RANGES = [
     { label: "D ", value: "DAY" },
-    { label: "2D", value: "TWO_DAYS" },
-    { label: "5D", value: "FIVE_DAYS" },
-    { label: "2W", value: "TWO_WEEKS" },
-    { label: "1M", value: "MONTH" },
-    { label: "D ", value: "THREE_MONTHS" },
+    { label: "3D", value: "THREE_DAYS" },
+    { label: "W", value: "WEEK" },
+    { label: "M", value: "MONTH" },
+    { label: "3M ", value: "THREE_MONTHS" },
     { label: "Y ", value: "YEAR" },
 ]
 
