@@ -57,8 +57,11 @@ const renderForecastItem = ({ item }: { item: Forecast }) => {
 
     const successCoefficientString = convertToPercentsString(item.successCoefficient);
     const successCoefficientStyle = {
-        color: item.successCoefficient >= 0 ? '#3f3' : '#c33',
-        fontWeight: "bold"
+        color: item.successCoefficient >= 0 ? '#3f3' : '#c00',
+        fontWeight: "bold",
+        textShadowColor: 'black',
+        textShadowRadius: 1,
+        textShadowOffset: { width: 1 },
     }
 
     return (
@@ -325,7 +328,7 @@ const styles = StyleSheet.create({
     statisticsItem: {
         flexDirection: "row",
         alignItems: "center",
-        width: 130
+        width: 130,
     },
     statisticsItemLogo: {
         height: 60,
