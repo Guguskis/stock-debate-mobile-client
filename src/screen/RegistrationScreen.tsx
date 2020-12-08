@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, ToastAndroid } from "react-native";
+import { Text, View, StyleSheet, ToastAndroid, Keyboard } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Button from "../common/Button";
 import properties from "../properties/properties";
@@ -40,7 +40,8 @@ const RegistrationScreen = () => {
 
         try {
             await registerExecute(request);
-            ToastAndroid.show("Registration succseful", ToastAndroid.SHORT);
+            Keyboard.dismiss();
+            ToastAndroid.show("Registration successful", ToastAndroid.SHORT);
             navigation.navigate("Login");
         } catch (err) {
             let errorMessage = registerError?.response?.data;

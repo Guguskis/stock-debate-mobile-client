@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, ToastAndroid } from "react-native";
+import { Text, View, StyleSheet, ToastAndroid, Keyboard } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Button from "../common/Button";
 import properties from "../properties/properties";
@@ -12,8 +12,10 @@ import Title from "../common/Title";
 const LoginScreen = () => {
     const navigation = useNavigation();
 
-    const [username, setUsername] = useState("Mataz");
-    const [password, setPassword] = useState("10101010");
+    // const [username, setUsername] = useState("Mataz");
+    // const [password, setPassword] = useState("10101010");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
 
 
     const [{ error: loginError }, loginExecute] = useAxios(
@@ -47,6 +49,7 @@ const LoginScreen = () => {
                 const { data: userData } = await userExecute();
                 GLOBAL.USER.id = userData.id;
                 GLOBAL.USER.username = userData.username;
+                Keyboard.dismiss();
                 navigation.navigate("Home");
             } else {
                 ToastAndroid.show("Incorrect username or password", ToastAndroid.SHORT);
