@@ -197,10 +197,10 @@ const ForecastsResultScreen = () => {
                 dropDownStyle={styles.sortTypeSelectorDropdown}
                 items={[
                     { label: 'Sort', value: '', },
-                    { label: 'Expiration asc', value: 'expirationDateAsc', },
-                    { label: 'Expiration desc', value: 'expirationDateDesc', },
-                    { label: 'Profit asc', value: 'successCoefficientAsc' },
-                    { label: 'Profit desc', value: 'successCoefficientDesc' },
+                    { label: 'Expiration ▲', value: 'expirationDateAsc', },
+                    { label: 'Expiration ▼', value: 'expirationDateDesc', },
+                    { label: 'Profit ▲', value: 'successCoefficientAsc' },
+                    { label: 'Profit ▼', value: 'successCoefficientDesc' },
                 ]}
                 placeholder="Sort"
                 defaultValue={selectedSort}

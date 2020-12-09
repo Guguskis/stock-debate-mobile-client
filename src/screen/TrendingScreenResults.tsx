@@ -66,10 +66,10 @@ const TrendingScreenResults = () => {
                 dropDownStyle={styles.sortTypeSelectorDropdown}
                 items={[
                     { label: 'Sort', value: '', },
-                    { label: 'Total asc', value: 'opinionsTotalAsc', },
-                    { label: 'Total desc', value: 'opinionsTotalDesc', },
-                    { label: 'Last day asc', value: 'opinionsLastDayAsc' },
-                    { label: 'Last day desc ', value: 'opinionsLastDayDesc' },
+                    { label: 'Total ▲', value: 'opinionsTotalAsc', },
+                    { label: 'Total ▼', value: 'opinionsTotalDesc', },
+                    { label: 'Last day ▲', value: 'opinionsLastDayAsc' },
+                    { label: 'Last day ▼ ', value: 'opinionsLastDayDesc' },
                 ]}
                 placeholder="Sort"
                 defaultValue={selectedSort}
