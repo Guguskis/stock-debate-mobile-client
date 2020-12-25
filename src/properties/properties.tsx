@@ -26,3 +26,5 @@ export default {
         stock: "http://discovervegan.lt/stock",
     }
 }
+
+// expo published app https://expo.io/@guguskis/projects/stock-debate-mobile-client
