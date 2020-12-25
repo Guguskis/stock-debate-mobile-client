@@ -16,9 +16,13 @@ export default {
         }
     },
     url: {
-        autentification: "http://192.168.43.170:8081",
-        stockDebateApi: "http://192.168.43.170:8082",
-        community: "http://192.168.43.170:8085",
-        stock: "http://192.168.43.170:8083",
+        // autentification: "http://192.168.184.221:8081",
+        // stockDebateApi: "http://192.168.184.221:8082",
+        // community: "http://192.168.184.221:8085",
+        // stock: "http://192.168.184.221:8083",
+        autentification: "http://discovervegan.lt/authentication",
+        stockDebateApi: "http://discovervegan.lt/stockDebateApi",
+        community: "http://discovervegan.lt/community",
+        stock: "http://discovervegan.lt/stock",
     }
 }

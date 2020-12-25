@@ -12,10 +12,10 @@ import Title from "../common/Title";
 const LoginScreen = () => {
     const navigation = useNavigation();
 
-    // const [username, setUsername] = useState("Mataz");
-    // const [password, setPassword] = useState("10101010");
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("Mataz");
+    const [password, setPassword] = useState("10101010");
+    // const [username, setUsername] = useState("");
+    // const [password, setPassword] = useState("");
 
 
     const [{ error: loginError }, loginExecute] = useAxios(
@@ -43,17 +43,18 @@ const LoginScreen = () => {
         };
 
         try {
-            const { data: loginData } = await loginExecute(request);
+            // fixme http redirects 301-303 change method to GET. Redirect 307 would solve the problem, but domenai.lt does not support it
+            // const { data: loginData } = await loginExecute(request);
 
-            if (loginData.canLogin) {
-                const { data: userData } = await userExecute();
-                GLOBAL.USER.id = userData.id;
-                GLOBAL.USER.username = userData.username;
-                Keyboard.dismiss();
-                navigation.navigate("Home");
-            } else {
-                ToastAndroid.show("Incorrect username or password", ToastAndroid.SHORT);
-            }
+            // if (loginData.canLogin) {
+            const { data: userData } = await userExecute();
+            GLOBAL.USER.id = userData.id;
+            GLOBAL.USER.username = userData.username;
+            Keyboard.dismiss();
+            navigation.navigate("Home");
+            // } else {
+            // ToastAndroid.show("Incorrect username or password", ToastAndroid.SHORT);
+            // }
         } catch (err) {
             console.log(err);
         }
