@@ -44,7 +44,7 @@ const useOpinionsRetriever = (subredditProps: string, stockProps: string, dateRa
         if (stockSymbol && dateRange) {
             subredditOpinionsExecute();
         } else {
-            console.log("Unable to retrieve opinions, because one of variables is empty");
+            console.log(`Unable to retrieve opinions, because one of variables is empty: { stockSymbol=${stockSymbol}, dateRange=${dateRange} }`);
         }
     }, [subreddit, stockSymbol, dateRange]);
 

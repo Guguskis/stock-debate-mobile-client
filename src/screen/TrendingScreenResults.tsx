@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet, FlatList } from "react-native";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import properties from "../properties/properties";
-import { TextInput } from "react-native-gesture-handler";
+import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import DropDownPicker from "react-native-dropdown-picker";
 import Title from "../common/Title";
 import Logo from "../common/Logo";
@@ -18,22 +18,7 @@ interface Trend {
     opinionsLastDay: number,
 }
 
-const renderTrendItem = ({ item }: { item: Trend }) => {
 
-    return (
-        <View style={styles.trendItem}>
-            <Logo source={item.stock.logoUrl} />
-            <Text style={styles.trendDetailsStockSymbol}>{item.stock.symbol}</Text>
-            <View style={styles.trendDetailsContainer}>
-                <Text style={styles.trendDetailsOpinionsTitle}>Opinions</Text>
-                <View >
-                    <Text>Total       {item.opinionsTotal} </Text>
-                    <Text>Last day {item.opinionsLastDay}</Text>
-                </View>
-            </View>
-        </View>
-    );
-}
 
 const filterTrendsByQuery = (query: string, trends: Array<Trend>) => {
     return trends.filter(trend => {
@@ -50,6 +35,7 @@ const filterTrendsByQuery = (query: string, trends: Array<Trend>) => {
 
 const TrendingScreenResults = () => {
     const route = useRoute();
+    const navigation = useNavigation();
 
     const [subreddit, setSubreddit] = useState(route.params?.subreddit);
     const [trends, setTrends] = useState<Array<Trend>>(route.params?.trends);
@@ -57,6 +43,34 @@ const TrendingScreenResults = () => {
 
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedSort, setSelectedSort] = useState("");
+
+    const renderTrendItem = ({ item }: { item: Trend }) => {
+
+        const onPressOpenOpinions = () => {
+
+            navigation.navigate("SubredditOpinionResults", {
+                subreddit: subreddit,
+                stock: item.stock
+            });
+        }
+
+        return (
+            <TouchableOpacity
+                style={styles.trendItem}
+                onPress={onPressOpenOpinions}
+            >
+                <Logo source={item.stock.logoUrl} />
+                <Text style={styles.trendDetailsStockSymbol}>{item.stock.symbol}</Text>
+                <View style={styles.trendDetailsContainer}>
+                    <Text style={styles.trendDetailsOpinionsTitle}>Opinions</Text>
+                    <View >
+                        <Text>Total       {item.opinionsTotal} </Text>
+                        <Text>Last day {item.opinionsLastDay}</Text>
+                    </View>
+                </View>
+            </TouchableOpacity>
+        );
+    }
 
     const SortPicker = () => {
         return (
