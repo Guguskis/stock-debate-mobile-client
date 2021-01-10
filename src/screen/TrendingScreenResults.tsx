@@ -42,7 +42,7 @@ const TrendingScreenResults = () => {
     const [filteredTrends, setFilteredTrends] = useState<Array<Trend>>(route.params?.trends);
 
     const [searchQuery, setSearchQuery] = useState("");
-    const [selectedSort, setSelectedSort] = useState("");
+    const [selectedSort, setSelectedSort] = useState("opinionsLastDayDesc");
 
     const renderTrendItem = ({ item }: { item: Trend }) => {
 
@@ -79,13 +79,12 @@ const TrendingScreenResults = () => {
                 itemStyle={styles.sortTypeSelectorItem}
                 dropDownStyle={styles.sortTypeSelectorDropdown}
                 items={[
-                    { label: 'Sort', value: '', },
                     { label: 'Total ▲', value: 'opinionsTotalAsc', },
                     { label: 'Total ▼', value: 'opinionsTotalDesc', },
                     { label: 'Last day ▲', value: 'opinionsLastDayAsc' },
                     { label: 'Last day ▼ ', value: 'opinionsLastDayDesc' },
                 ]}
-                placeholder="Sort"
+                placeholder="Last day ▼"
                 defaultValue={selectedSort}
                 onChangeItem={item => setSelectedSort(item.value)}
             />
