@@ -20,10 +20,10 @@ export default {
         // stockDebateApi: "http://192.168.184.221:8082",
         // community: "http://192.168.184.221:8085",
         // stock: "http://192.168.184.221:8083",
-        autentification: "http://discovervegan.lt/authentication",
-        stockDebateApi: "http://discovervegan.lt/stockDebateApi",
-        community: "http://discovervegan.lt/community",
-        stock: "http://discovervegan.lt/stock",
+        autentification: "http://discovervegan.lt:8090/authentication",
+        stockDebateApi: "http://discovervegan.lt:8090/stock-debate-api",
+        community: "http://discovervegan.lt:8090/community",
+        stock: "http://discovervegan.lt:8090/stock",
     }
 }
 
